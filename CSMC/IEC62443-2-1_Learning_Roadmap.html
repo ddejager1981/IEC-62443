@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEC 62443-2-1 CSMS Mastery Roadmap</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+  :root {
+    --bg: #0a0d14;
+    --bg2: #111520;
+    --panel: #151b28;
+    --border: #1f2d45;
+    --accent: #00c9a7;
+    --accent2: #ff6b35;
+    --accent3: #7c6bff;
+    --accent4: #f7c948;
+    --text: #d4dce8;
+    --muted: #5a6a82;
+    --white: #eef2f8;
+    --danger: #e05c5c;
+    --s1: #00c9a7;
+    --s2: #2196f3;
+    --s3: #ff6b35;
+    --s4: #7c6bff;
+    --s5: #f7c948;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0a0d14 0%, #0e1420 50%, #111826 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 32px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(0,201,167,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 20%;
+    width: 400px; height: 200px;
+    background: radial-gradient(circle, rgba(124,107,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    max-width: 700px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 14px;
+    font-style: italic;
+    max-width: 560px;
+    margin-bottom: 24px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+  }
+  .hero-badge .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .hero-badge .dot.orange { background: var(--accent2); }
+  .hero-badge .dot.purple { background: var(--accent3); }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .progress-bar::-webkit-scrollbar { display: none; }
+  .progress-step {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .progress-step .pstep-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 18px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .progress-step .pstep-inner:hover,
+  .progress-step.active .pstep-inner {
+    border-bottom-color: var(--accent);
+    color: var(--white);
+  }
+  .pstep-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    flex-shrink: 0;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .progress-step.active .pstep-num,
+  .progress-step.done .pstep-num {
+    background: var(--accent);
+    color: #000;
+  }
+  .progress-step.s1.active .pstep-num { background: var(--s1); }
+  .progress-step.s2.active .pstep-num { background: var(--s2); }
+  .progress-step.s3.active .pstep-num { background: var(--s3); }
+  .progress-step.s4.active .pstep-num { background: var(--s4); }
+  .progress-step.s5.active .pstep-num { background: var(--s5); color: #000; }
+  .pstep-label {
+    font-size: 12px;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .progress-step.active .pstep-label { color: var(--white); }
+  .pstep-arrow {
+    color: var(--border);
+    padding: 0 4px;
+    font-size: 16px;
+  }
+
+  /* MAIN LAYOUT */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 200px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .sidebar-section {
+    padding: 0 16px;
+    margin-bottom: 8px;
+  }
+  .sidebar-section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 8px 6px;
+    display: block;
+  }
+  .stage-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  .stage-btn:hover { background: rgba(255,255,255,0.04); }
+  .stage-btn.active {
+    background: rgba(0,201,167,0.08);
+    color: var(--white);
+  }
+  .stage-btn.s1.active { background: rgba(0,201,167,0.08); }
+  .stage-btn.s2.active { background: rgba(33,150,243,0.08); }
+  .stage-btn.s3.active { background: rgba(255,107,53,0.08); }
+  .stage-btn.s4.active { background: rgba(124,107,255,0.08); }
+  .stage-btn.s5.active { background: rgba(247,201,72,0.08); }
+  .stage-color {
+    width: 4px;
+    height: 36px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .s1-color { background: var(--s1); }
+  .s2-color { background: var(--s2); }
+  .s3-color { background: var(--s3); }
+  .s4-color { background: var(--s4); }
+  .s5-color { background: var(--s5); }
+  .stage-btn-text { flex: 1; }
+  .stage-btn-title {
+    font-weight: 500;
+    display: block;
+    line-height: 1.3;
+    font-size: 12px;
+  }
+  .stage-btn-sub {
+    color: var(--muted);
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .stage-duration {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    overflow-y: auto;
+    height: calc(100vh - 200px);
+    padding: 32px;
+  }
+
+  /* STAGE PANEL */
+  .stage-panel {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .stage-panel.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .stage-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stage-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1;
+    opacity: 0.15;
+    flex-shrink: 0;
+    color: var(--white);
+  }
+  .stage-header-text { flex: 1; }
+  .stage-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .tag-s1 { background: rgba(0,201,167,0.15); color: var(--s1); }
+  .tag-s2 { background: rgba(33,150,243,0.15); color: #64b5f6; }
+  .tag-s3 { background: rgba(255,107,53,0.15); color: var(--s3); }
+  .tag-s4 { background: rgba(124,107,255,0.15); color: #a89bff; }
+  .tag-s5 { background: rgba(247,201,72,0.15); color: var(--s5); }
+  .stage-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .stage-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .stage-meta-item {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stage-meta-item strong { color: var(--text); }
+
+  /* OVERVIEW BOX */
+  .overview-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .overview-box.s2-border { border-left-color: var(--s2); }
+  .overview-box.s3-border { border-left-color: var(--s3); }
+  .overview-box.s4-border { border-left-color: var(--s4); }
+  .overview-box.s5-border { border-left-color: var(--s5); }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* SKILL GRID */
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .skill-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: default;
+  }
+  .skill-card:hover {
+    border-color: var(--muted);
+    transform: translateY(-1px);
+  }
+  .skill-card-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .skill-icon {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .skill-card-title {
+    font-weight: 500;
+    color: var(--white);
+    font-size: 13px;
+    line-height: 1.3;
+  }
+  .skill-card-desc {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .skill-clause {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* REQUIREMENT TABLE */
+  .req-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 28px;
+  }
+  .req-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .req-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(31,45,69,0.5);
+    font-size: 12.5px;
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .req-table tr:last-child td { border-bottom: none; }
+  .req-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .req-id {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .req-shall {
+    display: inline;
+    background: rgba(224,92,92,0.15);
+    color: #e87878;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+  .req-should {
+    display: inline;
+    background: rgba(247,201,72,0.12);
+    color: var(--s5);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+
+  /* PRACTICE BLOCKS */
+  .practice-list {
+    margin-bottom: 28px;
+  }
+  .practice-item {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(31,45,69,0.5);
+  }
+  .practice-item:last-child { border-bottom: none; }
+  .practice-bullet {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .practice-bullet.baseline { background: var(--accent); }
+  .practice-bullet.additional { background: var(--accent3); }
+  .practice-text { font-size: 13px; line-height: 1.6; color: var(--text); }
+
+  /* DELIVERABLES */
+  .deliverable-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .deliverable-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .deliverable-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .deliverable-name {
+    font-size: 12.5px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .deliverable-desc {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* CHECKLIST */
+  .checklist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    font-size: 12.5px;
+    color: var(--text);
+  }
+  .checklist-item:hover { border-color: var(--muted); }
+  .checklist-item.checked {
+    border-color: var(--accent);
+    background: rgba(0,201,167,0.06);
+    color: var(--white);
+  }
+  .checklist-item.checked .check-box {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: rgba(0,201,167,0.06);
+    border: 1px solid rgba(0,201,167,0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout.warn {
+    background: rgba(247,201,72,0.06);
+    border-color: rgba(247,201,72,0.2);
+  }
+  .callout.danger {
+    background: rgba(224,92,92,0.06);
+    border-color: rgba(224,92,92,0.2);
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout-text { font-size: 13px; line-height: 1.7; color: var(--text); }
+  .callout-text strong { color: var(--white); }
+
+  /* ANNEX REFERENCE */
+  .annex-ref {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    display: inline;
+  }
+
+  /* MILESTONE BANNER */
+  .milestone {
+    background: linear-gradient(135deg, var(--panel), rgba(21,27,40,0.8));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .milestone-icon { font-size: 28px; flex-shrink: 0; }
+  .milestone-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .milestone-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { height: auto; }
+    .checklist { grid-template-columns: 1fr; }
+    .skill-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">OT Security Learning Roadmap · IEC 62443-2-1:2010</div>
+  <h1>Mastering <span>CSMS Establishment</span><br>for IACS Environments</h1>
+  <p class="hero-sub">A structured, self-directed journey from foundational concepts to autonomous CSMS operation — built directly from the standard's requirements, Annex A guidance, and Annex B process framework.</p>
+  <div class="hero-meta">
+    <div class="hero-badge"><span class="dot"></span>5 Progressive Stages</div>
+    <div class="hero-badge"><span class="dot orange"></span>19 Requirement Tables</div>
+    <div class="hero-badge"><span class="dot purple"></span>3 Main CSMS Categories</div>
+    <div class="hero-badge"><span class="dot" style="background:var(--s5)"></span>342-Page Standard Coverage</div>
+  </div>
+</div>
+
+<!-- PROGRESS NAV -->
+<div class="progress-bar">
+  <div class="progress-step s1 active" onclick="showStage(1)">
+    <div class="pstep-inner">
+      <span class="pstep-num">1</span>
+      <span class="pstep-label">Foundations</span>
+    </div>
+  </div>
+  <span class="pstep-arrow">›</span>
+  <div class="progress-step s2" onclick="showStage(2)">
+    <div class="pstep-inner">
+      <span class="pstep-num">2</span>
+      <span class="pstep-label">Risk Analysis</span>
+    </div>
+  </div>
+  <span class="pstep-arrow">›</span>
+  <div class="progress-step s3" onclick="showStage(3)">
+    <div class="pstep-inner">
+      <span class="pstep-num">3</span>
+      <span class="pstep-label">Policy & Controls</span>
+    </div>
+  </div>
+  <span class="pstep-arrow">›</span>
+  <div class="progress-step s4" onclick="showStage(4)">
+    <div class="pstep-inner">
+      <span class="pstep-num">4</span>
+      <span class="pstep-label">Implementation</span>
+    </div>
+  </div>
+  <span class="pstep-arrow">›</span>
+  <div class="progress-step s5" onclick="showStage(5)">
+    <div class="pstep-inner">
+      <span class="pstep-num">5</span>
+      <span class="pstep-label">Advanced Mastery</span>
+    </div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Stage 1 — Foundations</span>
+      <button class="stage-btn s1 active" onclick="showStage(1)">
+        <div class="stage-color s1-color"></div>
+        <div class="stage-btn-text">
+          <span class="stage-btn-title">IACS & IEC 62443 Orientation</span>
+          <span class="stage-btn-sub">Weeks 1–4</span>
+        </div>
+        <span class="stage-duration">~4 wk</span>
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Stage 2 — Risk Analysis</span>
+      <button class="stage-btn s2" onclick="showStage(2)">
+        <div class="stage-color s2-color"></div>
+        <div class="stage-btn-text">
+          <span class="stage-btn-title">Business Rationale & Risk Assessment</span>
+          <span class="stage-btn-sub">Weeks 5–10</span>
+        </div>
+        <span class="stage-duration">~6 wk</span>
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Stage 3 — Addressing Risk</span>
+      <button class="stage-btn s3" onclick="showStage(3)">
+        <div class="stage-color s3-color"></div>
+        <div class="stage-btn-text">
+          <span class="stage-btn-title">Policy, Countermeasures & Org Security</span>
+          <span class="stage-btn-sub">Weeks 11–20</span>
+        </div>
+        <span class="stage-duration">~10 wk</span>
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Stage 4 — Implementation</span>
+      <button class="stage-btn s4" onclick="showStage(4)">
+        <div class="stage-color s4-color"></div>
+        <div class="stage-btn-text">
+          <span class="stage-btn-title">CSMS Implementation & Incident Response</span>
+          <span class="stage-btn-sub">Weeks 21–32</span>
+        </div>
+        <span class="stage-duration">~12 wk</span>
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Stage 5 — Mastery</span>
+      <button class="stage-btn s5" onclick="showStage(5)">
+        <div class="stage-color s5-color"></div>
+        <div class="stage-btn-text">
+          <span class="stage-btn-title">Monitoring, Audit & Continuous Improvement</span>
+          <span class="stage-btn-sub">Weeks 33–52+</span>
+        </div>
+        <span class="stage-duration">~20 wk</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- ========================= STAGE 1 ========================= -->
+    <div class="stage-panel active" id="stage-1">
+      <div class="stage-header">
+        <div class="stage-number">01</div>
+        <div class="stage-header-text">
+          <span class="stage-tag tag-s1">Stage 1 · Beginner</span>
+          <div class="stage-title">IACS Fundamentals & IEC 62443-2-1 Orientation</div>
+          <div class="stage-meta">
+            <span class="stage-meta-item">⏱ <strong>Weeks 1–4</strong></span>
+            <span class="stage-meta-item">📄 <strong>Standard Sections:</strong> Foreword, §0, §1, §2, §3, §4.1</span>
+            <span class="stage-meta-item">🎯 <strong>Goal:</strong> Understand the CSMS concept and standard architecture</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-box">
+        Before touching any element of a CSMS, you must understand <em>what</em> IEC 62443-2-1 is, <em>why</em> it exists, and <em>how</em> it is structured. This stage grounds you in the language of the standard — IACS, CSMS, zones, security levels — and reveals the three-category architecture that everything else builds on. Critically, the standard distinguishes between <strong>shall</strong> (mandatory) and <strong>should</strong> (strongly recommended): you must know this distinction before reading any requirement.
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-text"><strong>Tutor's Note:</strong> Most practitioners skip Stage 1 and go straight to controls. This is the #1 reason CSMSs fail — they are built without understanding scope, purpose, or the iterative nature of the program. Annex B, Figure B.1 shows the six top-level activities sequentially. Honour the sequence.</div>
+      </div>
+
+      <div class="section-title">Core Concepts to Master</div>
+      <div class="skill-grid">
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(0,201,167,0.12)">🏭</div>
+            <div class="skill-card-title">What is an IACS?</div>
+          </div>
+          <div class="skill-card-desc">Industrial Automation & Control Systems — DCS, SCADA, PLCs, SIS, HMIs. Understand what makes them fundamentally different from IT systems (safety, availability primacy, legacy, real-time constraints).</div>
+          <div class="skill-clause">Standard context: §0 Introduction, §3 Definitions</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(0,201,167,0.12)">🛡️</div>
+            <div class="skill-card-title">What is a CSMS?</div>
+          </div>
+          <div class="skill-card-desc">A Cyber Security Management System — the systematic set of policies, procedures, practices, and personnel controls that protect IACS. It is a management system, not a technology product.</div>
+          <div class="skill-clause">Standard ref: §4.1 Overview, Annex A §A.1</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(0,201,167,0.12)">🗂️</div>
+            <div class="skill-card-title">The 3-Category Architecture</div>
+          </div>
+          <div class="skill-card-desc">The CSMS is built on three main categories: (1) Risk Analysis, (2) Addressing Risk with the CSMS, (3) Monitoring and Improving the CSMS. Everything in the standard maps to one of these.</div>
+          <div class="skill-clause">Standard ref: §4.1, Figure 1</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(0,201,167,0.12)">📐</div>
+            <div class="skill-card-title">Shall vs. Should</div>
+          </div>
+          <div class="skill-card-desc">SHALL = mandatory requirement. SHOULD = strongly recommended. The standard's 19 requirement tables use both. Knowing which is which determines your compliance baseline vs. best-practice aspirations.</div>
+          <div class="skill-clause">Standard ref: §3.3 Conventions</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(0,201,167,0.12)">🔗</div>
+            <div class="skill-card-title">Relationship to ISO/IEC 27001</div>
+          </div>
+          <div class="skill-card-desc">IEC 62443-2-1 extends ISO/IEC 27001 for the IACS context. Annex C maps every requirement to its 27001 equivalent. If your organisation already has an ISMS, understand what gaps exist for IACS.</div>
+          <div class="skill-clause">Standard ref: §0.3, Annex C</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(0,201,167,0.12)">🌐</div>
+            <div class="skill-card-title">Annex B: The 6-Step Process</div>
+          </div>
+          <div class="skill-card-desc">Annex B reveals HOW to develop the CSMS: Initiate → High-Level Risk → Establish Policy → Detailed Risk → Select Countermeasures → Maintain. This is your master project plan.</div>
+          <div class="skill-clause">Standard ref: Annex B, Figure B.1</div>
+        </div>
+      </div>
+
+      <div class="section-title">Key Terminology to Own</div>
+      <table class="req-table">
+        <thead>
+          <tr><th>Term</th><th>Definition (per §3.1)</th><th>Why It Matters for Your CSMS</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="req-id">Asset</span></td>
+            <td>Any physical or logical object of perceived or actual value (incl. information, hardware, software)</td>
+            <td>You cannot scope your CSMS without an asset inventory</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Risk</span></td>
+            <td>The likelihood that a threat will exploit a vulnerability and the consequence thereof</td>
+            <td>The entire CSMS is risk-driven — every control must be traceable to a risk</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Security Zone</span></td>
+            <td>A grouping of logical or physical assets sharing common security requirements</td>
+            <td>Zones drive network segmentation and target security levels</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Target Security Level (SL-T)</span></td>
+            <td>The desired security level for a zone, determined by risk assessment</td>
+            <td>All countermeasure selection is calibrated to achieve the SL-T</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Conformance</span></td>
+            <td>The state of adhering to stated CSMS policies and executing procedures at the correct time</td>
+            <td>A CSMS that is not followed provides zero risk reduction</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">HSE</span></td>
+            <td>Health, Safety and Environment — always considered alongside cyber security in IACS contexts</td>
+            <td>Your CSMS must never create HSE risk while reducing cyber risk</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">Stage 1 Deliverables (Self-Assessment)</div>
+      <div class="checklist" id="checklist-1">
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Can recite the 3 CSMS categories from memory</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Can draw Figure 1 (CSMS element map) from scratch</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Can explain IACS vs. IT security differences to a non-expert</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Know Annex B's 6-step process sequence</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Can identify a CSMS scope boundary in a facility diagram</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Understand which requirements are SHALL vs. SHOULD</div>
+      </div>
+
+      <div class="milestone">
+        <span class="milestone-icon">🎯</span>
+        <div>
+          <div class="milestone-title">Stage 1 Gate: Read §0–§4.1 of the standard and Annex B §B.1–B.3 in full.</div>
+          <div class="milestone-desc">You are ready to proceed when you can accurately describe the overall CSMS structure and explain why the standard begins with a business rationale before risk assessment.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= STAGE 2 ========================= -->
+    <div class="stage-panel" id="stage-2">
+      <div class="stage-header">
+        <div class="stage-number">02</div>
+        <div class="stage-header-text">
+          <span class="stage-tag tag-s2">Stage 2 · Intermediate-Foundation</span>
+          <div class="stage-title">Risk Analysis — Business Rationale & Risk Assessment</div>
+          <div class="stage-meta">
+            <span class="stage-meta-item">⏱ <strong>Weeks 5–10</strong></span>
+            <span class="stage-meta-item">📄 <strong>Standard Sections:</strong> §4.2, Annex A §A.2, Annex B §B.3–B.4</span>
+            <span class="stage-meta-item">🎯 <strong>Goal:</strong> Independently execute a risk assessment that justifies your CSMS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-box s2-border">
+        Category 1 of the CSMS is Risk Analysis. This is the engine that drives everything else. Without rigorous risk analysis, countermeasure selection is guesswork. This stage teaches you to build the business rationale that secures management commitment (Annex B Step 1), conduct a high-level risk assessment (Annex B Step 2), and then a detailed vulnerability assessment (Annex B Step 4). You will work directly from requirement Tables 1 and 2 of the standard.
+      </div>
+
+      <div class="callout">
+        <span class="callout-icon">💡</span>
+        <div class="callout-text"><strong>Annex B Warning:</strong> A common pitfall cited in the standard is spending resources on detailed vulnerability assessment before establishing the high-level risk context. Always complete the high-level assessment first. Detailed technical findings presented without a risk narrative receive apathetic management responses.</div>
+      </div>
+
+      <div class="section-title">Element: Business Rationale (§4.2.2)</div>
+      <table class="req-table">
+        <thead><tr><th>Clause</th><th>Requirement</th><th>Level</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="req-id">4.2.2.1</span></td>
+            <td>Develop a high-level business rationale for the CSMS based on the organisation's specific cyber risk context, safety requirements, and regulatory obligations</td>
+            <td><span class="req-should">SHOULD</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">Element: Risk Identification, Classification & Assessment (§4.2.3)</div>
+      <table class="req-table">
+        <thead><tr><th>Clause</th><th>Requirement</th><th>Level</th></tr></thead>
+        <tbody>
+          <tr><td><span class="req-id">4.2.3.1</span></td><td>Select a specific risk assessment methodology (HAZOP, LOPA, ISA-84, bowtie, etc.) and document the selection rationale</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.2</span></td><td>Provide training to all risk assessment participants on the selected methodology</td><td><span class="req-should">SHOULD</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.3</span></td><td>Conduct a high-level system risk assessment — identify threats, general vulnerabilities, and consequences at the system level</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.4</span></td><td>Identify each IACS in scope, gather data (architecture, connectivity, criticality), and document findings</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.5</span></td><td>Develop simple network diagrams for each IACS to document connectivity</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.6</span></td><td>Develop prioritisation criteria and assign a priority level to each IACS based on risk</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.7</span></td><td>Perform a detailed vulnerability assessment on prioritised systems, identifying specific exploitable weaknesses</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.8</span></td><td>Risk assessment methodology SHALL include identification of a detailed risk assessment approach for each system</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.9</span></td><td>Conduct a detailed risk assessment on each prioritised system using the selected methodology</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.10</span></td><td>Identify reassessment triggers — events that require a new risk assessment (major changes, incidents, elapsed time)</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.11</span></td><td>Integrate physical, HSE, and cyber security risk assessment results into a unified risk picture</td><td>Req.</td></tr>
+          <tr><td><span class="req-id">4.2.3.12</span></td><td>Conduct risk assessments through all lifecycle stages of the IACS (design, commissioning, operation, decommission)</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.13</span></td><td>Document the risk assessment methodology AND results — both must be retained</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.2.3.14</span></td><td>Maintain up-to-date vulnerability assessment records</td><td><span class="req-should">SHOULD</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">Skills to Build: Annex A §A.2 Guidance</div>
+      <div class="skill-grid">
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(33,150,243,0.12)">📊</div>
+            <div class="skill-card-title">Likelihood & Consequence Scaling</div>
+          </div>
+          <div class="skill-card-desc">Build a likelihood scale (Table A.1) and consequence scale (Table A.2). Combine into a risk matrix (Table A.3). These are the core tools for all risk ratings.</div>
+          <div class="skill-clause">Annex A: Tables A.1, A.2, A.3</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(33,150,243,0.12)">🗺️</div>
+            <div class="skill-card-title">IACS Data Collection Sheet</div>
+          </div>
+          <div class="skill-card-desc">Use Figure A.4 format to systematically inventory each IACS: system name, location, connectivity, OS/firmware, criticality, owner, existing controls.</div>
+          <div class="skill-clause">Annex A: Figure A.4, A.5</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(33,150,243,0.12)">⚡</div>
+            <div class="skill-card-title">Threat Modelling for OT</div>
+          </div>
+          <div class="skill-card-desc">Identify threat sources (insider, nation-state, accidental, supply chain) and threat events (manipulation, DoS, espionage). Map to IACS-specific consequences (safety, environmental, production loss).</div>
+          <div class="skill-clause">Annex A: §A.2.3, §A.2.3.2</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(33,150,243,0.12)">🔢</div>
+            <div class="skill-card-title">Risk Level Matrix Application</div>
+          </div>
+          <div class="skill-card-desc">Score each identified risk using your matrix. Produce prioritised risk registers with Table A.5 and A.6 formats (IACS asset tables with assessment results and risk levels).</div>
+          <div class="skill-clause">Annex A: Tables A.5, A.6</div>
+        </div>
+      </div>
+
+      <div class="section-title">Stage 2 Deliverables</div>
+      <div class="deliverable-grid">
+        <div class="deliverable-card"><span class="deliverable-icon">📋</span><div><div class="deliverable-name">Business Rationale Document</div><div class="deliverable-desc">Signed by senior management, justifying the CSMS investment</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🗺️</span><div><div class="deliverable-name">IACS Inventory & Network Diagrams</div><div class="deliverable-desc">Per 4.2.3.4 & 4.2.3.5, all systems documented</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">⚠️</span><div><div class="deliverable-name">High-Level Risk Assessment Report</div><div class="deliverable-desc">System-level threat, vulnerability, consequence analysis</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🔬</span><div><div class="deliverable-name">Detailed Vulnerability Assessment</div><div class="deliverable-desc">Technical findings for prioritised systems (4.2.3.7)</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">📊</span><div><div class="deliverable-name">Risk Register (Tables A.5 / A.6 format)</div><div class="deliverable-desc">All risks scored, prioritised, and assigned owners</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🔄</span><div><div class="deliverable-name">Reassessment Trigger List</div><div class="deliverable-desc">Documented events that trigger a new assessment (4.2.3.10)</div></div></div>
+      </div>
+
+      <div class="milestone">
+        <span class="milestone-icon">🎯</span>
+        <div>
+          <div class="milestone-title">Stage 2 Gate: Complete a real or tabletop risk assessment on an IACS in your scope.</div>
+          <div class="milestone-desc">You are ready when you have a signed business rationale, a completed IACS inventory, a risk register with scored entries, and documented reassessment triggers. These documents become the permanent foundation of your CSMS.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= STAGE 3 ========================= -->
+    <div class="stage-panel" id="stage-3">
+      <div class="stage-header">
+        <div class="stage-number">03</div>
+        <div class="stage-header-text">
+          <span class="stage-tag tag-s3">Stage 3 · Intermediate</span>
+          <div class="stage-title">Addressing Risk — Policy, Organisation & Security Countermeasures</div>
+          <div class="stage-meta">
+            <span class="stage-meta-item">⏱ <strong>Weeks 11–20</strong></span>
+            <span class="stage-meta-item">📄 <strong>Standard Sections:</strong> §4.3.1–4.3.3, Annex A §A.3.2–A.3.3, Annex B §B.5–B.6</span>
+            <span class="stage-meta-item">🎯 <strong>Goal:</strong> Establish the full policy architecture and key technical controls</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-box s3-border">
+        Category 2 of the CSMS — <em>Addressing Risk with the CSMS</em> — contains the bulk of operational requirements. It is divided into three element groups: (1) Security Policy, Organisation and Awareness; (2) Selected Security Countermeasures; (3) Implementation. This stage covers groups 1 and 2. You will build the governance structure, write the policy suite, design the training programme, and implement six critical security countermeasures — the ones the standard explicitly calls out as having broad enough impact to warrant front-end design consideration.
+      </div>
+
+      <div class="section-title">Element Group 1: Security Policy, Organisation & Awareness (§4.3.2)</div>
+
+      <div class="skill-grid" style="margin-bottom:16px">
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(255,107,53,0.12)">📝</div>
+            <div class="skill-card-title">CSMS Scope Definition (§4.3.2.2)</div>
+          </div>
+          <div class="skill-card-desc">Write a formal, approved CSMS scope document. It SHALL define the organisational boundaries, systems covered, strategic goals, process, and timing. This is your CSMS charter.</div>
+          <div class="skill-clause">Reqs: 4.3.2.2.1 (SHALL), 4.3.2.2.2 (SHOULD)</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(255,107,53,0.12)">👥</div>
+            <div class="skill-card-title">Organising for Security (§4.3.2.3)</div>
+          </div>
+          <div class="skill-card-desc">Obtain senior management commitment (4.3.2.3.1 SHALL). Establish a cross-functional security stakeholder network (4.3.2.3.2 SHALL). Define all roles and responsibilities in writing (4.3.2.3.3 SHALL).</div>
+          <div class="skill-clause">Table 4 — 4 requirements (3 SHALL, 1 SHOULD)</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(255,107,53,0.12)">🎓</div>
+            <div class="skill-card-title">Training & Awareness Programme (§4.3.2.4)</div>
+          </div>
+          <div class="skill-card-desc">Design and implement a cyber security training programme (4.3.2.4.1 SHALL). All personnel must receive procedure and security training (4.3.2.4.2 SHALL). Records must be kept (4.3.2.4.6 SHOULD).</div>
+          <div class="skill-clause">Table 5 — 6 requirements</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(255,107,53,0.12)">🔄</div>
+            <div class="skill-card-title">Business Continuity Planning (§4.3.2.5)</div>
+          </div>
+          <div class="skill-card-desc">Specify recovery objectives, determine impact per system, develop and test continuity plans (4.3.2.5.3 SHALL). Create backup & restore procedures (4.3.2.5.6 SHALL). Test and update regularly (4.3.2.5.7 SHALL).</div>
+          <div class="skill-clause">Table 6 — 7 requirements</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(255,107,53,0.12)">📜</div>
+            <div class="skill-card-title">Security Policies & Procedures (§4.3.2.6)</div>
+          </div>
+          <div class="skill-card-desc">Develop high-level policies (4.3.2.6.1 SHALL) and supporting procedures (4.3.2.6.2 SHALL). Document risk tolerance (4.3.2.6.5 SHALL). Communicate to all personnel (4.3.2.6.6 SHALL). Review regularly (4.3.2.6.7 SHALL).</div>
+          <div class="skill-clause">Table 7 — 8 requirements (6 SHALL)</div>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">📌</span>
+        <div class="callout-text"><strong>Key Insight:</strong> The standard requires that cyber security policies for IACS be developed from <em>existing high-level policies</em> and from characterised risks. Your policies should not be written in isolation — they extend organisational risk management (§4.3.2.6.3). Senior leadership must visibly endorse them (4.3.2.6.8 SHALL).</div>
+      </div>
+
+      <div class="section-title">Element Group 2: Selected Security Countermeasures (§4.3.3)</div>
+      <table class="req-table">
+        <thead><tr><th>Element</th><th>Key SHALL Requirements</th><th>OT-Specific Considerations</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="req-id">Personnel Security<br>§4.3.3.2</span></td>
+            <td>Establish personnel security policy (4.3.3.2.1); screen all personnel with IACS access including contractors (4.3.3.2.2); document and communicate security expectations (4.3.3.2.5); clear cyber security terms in employment contracts (4.3.3.2.6)</td>
+            <td>Segregation of duties (4.3.3.2.7 SHOULD) — no single person should have total control over IACS configuration changes</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Physical & Environmental Security<br>§4.3.3.3</span></td>
+            <td>Establish physical AND cyber security policies together (4.3.3.3.1); create physical security perimeter(s) (4.3.3.3.2); provide entry controls at all barriers (4.3.3.3.3); protect against environmental threats: fire, water, smoke, dust, radiation (4.3.3.3.4)</td>
+            <td>Physical segmentation is a primary OT countermeasure — it may provide compensating control for weak electronic authentication in legacy systems</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Network Segmentation<br>§4.3.3.4</span></td>
+            <td>Develop a zone-based network segmentation architecture (4.3.3.4.1 SHALL); isolate high-risk IACS with barrier devices (4.3.3.4.2 SHALL); block all non-essential traffic in/out of critical zones (4.3.3.4.3 SHALL)</td>
+            <td>Barrier devices: firewalls, routers, L3 switches for TCP/IP; standalone gateways for non-TCP/IP. Reference architecture in Figures A.8 and A.9</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Access Control: Account Admin<br>§4.3.3.5</span></td>
+            <td>Implement authorization per policy (4.3.3.5.1); access granted/changed/removed by authorised manager only (4.3.3.5.3 SHALL); record all accounts with permissions (4.3.3.5.4 SHALL); suspend/remove unneeded accounts immediately (4.3.3.5.5 SHALL); change all default passwords before service (4.3.3.5.7 SHALL)</td>
+            <td>Crew vs. individual accounts require threat/risk analysis. Individual accounts preferred where HSE accountability is required</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Access Control: Authentication<br>§4.3.3.6</span></td>
+            <td>Develop an authentication strategy (4.3.3.6.1 SHALL); authenticate all users before system use (4.3.3.6.2 SHALL); strong authentication for all admin/config accounts (4.3.3.6.3 SHALL); authenticate all remote users at appropriate strength (4.3.3.6.5 SHALL); develop remote login policy (4.3.3.6.6 SHALL)</td>
+            <td>Account lockout after failed attempts requires careful calibration — locking a valid user from a HMI during an incident has HSE implications (§4.3.3.6 Rationale)</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Access Control: Authorization<br>§4.3.3.7</span></td>
+            <td>Define authorization security policy with role-based privileges (4.3.3.7.1 SHALL); combine logical and physical permission methods (4.3.3.7.2 SHALL)</td>
+            <td>Safety implications MUST be considered when defining roles (4.3.3.7.3). In critical environments, use multiple authorization methods (4.3.3.7.4 SHOULD)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">Stage 3 Deliverables</div>
+      <div class="deliverable-grid">
+        <div class="deliverable-card"><span class="deliverable-icon">📄</span><div><div class="deliverable-name">CSMS Scope Document</div><div class="deliverable-desc">Formal, management-approved scope with boundaries</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🏢</span><div><div class="deliverable-name">Security Organisation Chart</div><div class="deliverable-desc">Roles, responsibilities, stakeholder network</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🎓</span><div><div class="deliverable-name">Training Programme & Records</div><div class="deliverable-desc">Programme design + delivery records per 4.3.2.4.6</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">📜</span><div><div class="deliverable-name">CSMS Policy Suite</div><div class="deliverable-desc">High-level policies + supporting procedures, management-endorsed</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🗺️</span><div><div class="deliverable-name">Network Segmentation Architecture</div><div class="deliverable-desc">Zone map with barrier devices and security levels</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🔑</span><div><div class="deliverable-name">Access Control Policy</div><div class="deliverable-desc">Account admin, authentication, authorization policies combined</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">👤</span><div><div class="deliverable-name">Personnel Security Policy</div><div class="deliverable-desc">Screening criteria, responsibilities, employment terms</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🔄</span><div><div class="deliverable-name">Business Continuity Plan</div><div class="deliverable-desc">Tested, with backup/restore procedures per 4.3.2.5</div></div></div>
+      </div>
+
+      <div class="milestone">
+        <span class="milestone-icon">🎯</span>
+        <div>
+          <div class="milestone-title">Stage 3 Gate: Policies written, reviewed by legal/management, communicated to all relevant staff.</div>
+          <div class="milestone-desc">The network segmentation architecture must be approved and physically/logically implemented (or have a documented implementation plan). Training completion records must exist for all personnel in scope.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= STAGE 4 ========================= -->
+    <div class="stage-panel" id="stage-4">
+      <div class="stage-header">
+        <div class="stage-number">04</div>
+        <div class="stage-header-text">
+          <span class="stage-tag tag-s4">Stage 4 · Advanced</span>
+          <div class="stage-title">CSMS Implementation — Risk Management, System Lifecycle & Incident Response</div>
+          <div class="stage-meta">
+            <span class="stage-meta-item">⏱ <strong>Weeks 21–32</strong></span>
+            <span class="stage-meta-item">📄 <strong>Standard Sections:</strong> §4.3.4, Annex A §A.3.4, Annex B §B.7</span>
+            <span class="stage-meta-item">🎯 <strong>Goal:</strong> Operationalise the CSMS — build living procedures for change, patching, information management and incident response</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-box s4-border">
+        Element Group 3 — Implementation — is where the CSMS becomes operational. This is the hardest part for most organisations because it requires converting policies into living, enforced procedures. The four elements are: Risk Management & Implementation, System Development & Maintenance, Information & Document Management, and Incident Planning & Response. These directly interact with existing OT maintenance, operations, and HSE management systems.
+      </div>
+
+      <div class="section-title">Element: Risk Management & Implementation (§4.3.4.2)</div>
+      <div class="skill-grid" style="margin-bottom:16px">
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(124,107,255,0.12)">⚖️</div>
+            <div class="skill-card-title">Risk Management Framework (4.3.4.2.1)</div>
+          </div>
+          <div class="skill-card-desc">Adopt a formal risk management framework that governs selection and implementation of IACS devices and countermeasures across the entire facility lifecycle. The framework must operate continuously — risk management is not a project, it is a process.</div>
+          <div class="skill-clause">SHALL requirement</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(124,107,255,0.12)">🛡️</div>
+            <div class="skill-card-title">Common Countermeasure Library (4.3.4.2.2)</div>
+          </div>
+          <div class="skill-card-desc">Define a standard set of technical AND administrative countermeasures to address recurring risk types consistently across the organisation. Where the same risk appears in multiple zones, the same approved countermeasure applies. Refer to Table A.4 for countermeasure examples by risk level.</div>
+          <div class="skill-clause">SHOULD requirement — Table A.4</div>
+        </div>
+      </div>
+
+      <div class="section-title">Element: System Development & Maintenance (§4.3.4.3)</div>
+      <table class="req-table">
+        <thead><tr><th>Clause</th><th>Requirement</th><th>Level</th></tr></thead>
+        <tbody>
+          <tr><td><span class="req-id">4.3.4.3.1</span></td><td>Define security functions and capabilities for each new component upfront; develop/procure and test together so the system meets its security profile</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.3.4.3.2</span></td><td>Develop and implement a change management system with separation of duty — the same individual cannot both approve and implement a change</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.3.4.3.3</span></td><td>Assess all proposed IACS changes for HSE and cyber security risk impact using technically knowledgeable reviewers</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.3.4.3.4</span></td><td>New systems installed in an existing zone must meet that zone's security policies; maintenance changes likewise must meet zone requirements</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.3.4.3.5</span></td><td>Integrate cyber security change management with existing PSM (Process Safety Management) procedures</td><td><span class="req-should">SHOULD</span></td></tr>
+          <tr><td><span class="req-id">4.3.4.3.7</span></td><td>Establish, document, and follow a patch management procedure</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.3.4.3.8</span></td><td>Establish, document, and follow an antivirus/malware management procedure</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.3.4.3.9</span></td><td>Establish a backup and restoration procedure, use it, and verify it by periodic testing</td><td><span class="req-shall">SHALL</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <span class="callout-icon">🔍</span>
+        <div class="callout-text"><strong>Tutor's Deep Dive — Patch Management in OT:</strong> Annex A §A.3.4.3.7 notes that a patch management method must determine: (1) relevance and criticality of the vulnerability the patch addresses, (2) impact on the Target Security Level if the patch IS applied, (3) impact if the patch is NOT applied. In OT, patch testing in a separate environment (§A.3.4.3.5.6) is a baseline practice before deploying to production. Vendor involvement is often required.</div>
+      </div>
+
+      <div class="section-title">Element: Information & Document Management (§4.3.4.4)</div>
+      <div class="skill-grid" style="margin-bottom:16px">
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(124,107,255,0.12)">🏷️</div>
+            <div class="skill-card-title">Information Classification (4.3.4.4.2)</div>
+          </div>
+          <div class="skill-card-desc">Define classification levels (e.g., Confidential, Restricted, Public) for all CSMS and IACS information. All logical assets — design documents, network diagrams, vulnerability assessments, control programs — must be classified (4.3.4.4.3 SHALL).</div>
+          <div class="skill-clause">SHALL requirements 4.3.4.4.1–4.3.4.4.3</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(124,107,255,0.12)">📁</div>
+            <div class="skill-card-title">Lifecycle Document Management (4.3.4.4.1)</div>
+          </div>
+          <div class="skill-card-desc">Build a document management process for all IACS information covering creation, update, retention, protection, and disposal with consideration for legal and regulatory requirements. Long-term retrieval must be addressed — legacy formats and media degradation are OT-specific concerns.</div>
+          <div class="skill-clause">SHALL + SHOULD requirements 4.3.4.4.4–4.3.4.4.7</div>
+        </div>
+      </div>
+
+      <div class="section-title">Element: Incident Planning & Response (§4.3.4.5) — The 3 Phases</div>
+      <table class="req-table">
+        <thead><tr><th>Phase</th><th>Key Requirements</th><th>OT-Specific Actions</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="req-id">Planning Phase</span></td>
+            <td>Implement a written incident response plan naming responsible personnel and actions (4.3.4.5.1 SHALL); communicate to all appropriate organisations (4.3.4.5.2 SHALL); establish unusual-activity reporting procedure (4.3.4.5.3 SHOULD); conduct regular drills (4.3.4.5.11 SHOULD)</td>
+            <td>Plan must include contingency for separating IACS from all non-essential conduits as a containment step. Include IACS engineers, IT security, operations, legal, safety in plan development</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Response Phase</span></td>
+            <td>Promptly respond to identified incidents per established procedures (4.3.4.5.6 SHALL); identify failed AND successful breaches (4.3.4.5.7 SHOULD); document all incident details (4.3.4.5.8 SHALL); communicate to all appropriate groups in a timely manner (4.3.4.5.9)</td>
+            <td>Priority tension: forensics preservation vs. getting production back online. Establish priorities before an incident occurs. Forensic specialists may be needed. The standard flags this tension explicitly (Annex A §A.3.4.5.3)</td>
+          </tr>
+          <tr>
+            <td><span class="req-id">Recovery Phase</span></td>
+            <td>Address and correct all issues discovered (4.3.4.5.10 SHALL); incorporate findings into CSMS policies, procedures, and countermeasures</td>
+            <td>Restoration from validated backups using tested procedures. Incident analysis feeds directly into CSMS improvement — this is the link to Category 3 (Monitoring)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">Stage 4 Deliverables</div>
+      <div class="deliverable-grid">
+        <div class="deliverable-card"><span class="deliverable-icon">🔧</span><div><div class="deliverable-name">Change Management System</div><div class="deliverable-desc">With separation of duties, documented approval trail</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🩹</span><div><div class="deliverable-name">Patch Management Procedure</div><div class="deliverable-desc">Risk-based, tested in separate environment first</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🦠</span><div><div class="deliverable-name">Antivirus/Malware Procedure</div><div class="deliverable-desc">Vendor-coordinated, zone-appropriate</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">💾</span><div><div class="deliverable-name">Backup & Restoration Procedure</div><div class="deliverable-desc">Tested and verified, covers all IACS assets</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">📂</span><div><div class="deliverable-name">Information Classification Scheme</div><div class="deliverable-desc">All CSMS assets classified and labelled</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🚨</span><div><div class="deliverable-name">Incident Response Plan</div><div class="deliverable-desc">3-phase: Planning, Response, Recovery — drill-tested</div></div></div>
+      </div>
+
+      <div class="milestone">
+        <span class="milestone-icon">🎯</span>
+        <div>
+          <div class="milestone-title">Stage 4 Gate: Conduct a tabletop incident response drill and debrief against your documented plan.</div>
+          <div class="milestone-desc">All Stage 4 procedures must be written, approved, communicated, and tested at least once. Your change management system must have evidence of separation-of-duties enforcement. You should be able to demonstrate a full backup and successful restoration of a test system.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= STAGE 5 ========================= -->
+    <div class="stage-panel" id="stage-5">
+      <div class="stage-header">
+        <div class="stage-number">05</div>
+        <div class="stage-header-text">
+          <span class="stage-tag tag-s5">Stage 5 · Advanced Mastery</span>
+          <div class="stage-title">Monitoring, Conformance, Continuous Improvement & Autonomous CSMS Operation</div>
+          <div class="stage-meta">
+            <span class="stage-meta-item">⏱ <strong>Weeks 33–52+ (ongoing)</strong></span>
+            <span class="stage-meta-item">📄 <strong>Standard Sections:</strong> §4.4, Annex A §A.4, Annex B §B.8</span>
+            <span class="stage-meta-item">🎯 <strong>Goal:</strong> Run a self-sustaining CSMS that detects its own weaknesses and improves without external prompting</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-box s5-border">
+        Category 3 — Monitoring and Improving the CSMS — is what separates a compliance exercise from a genuine security management system. The standard is explicit: <em>"Irrespective of the quality of a CSMS, if it is not used, it does not add any value."</em> (§4.4.2 Rationale) This stage builds the audit framework, KPI programme, and governance cycle that make the CSMS self-correcting. At mastery, you can run the CSMS with little to no external oversight because the system itself generates evidence of performance and triggers its own reviews.
+      </div>
+
+      <div class="callout danger">
+        <span class="callout-icon">🔴</span>
+        <div class="callout-text"><strong>The Hardest Stage:</strong> Annex B §B.8 states that organisations consistently report the "Maintain the CSMS" activity as the most difficult — initial enthusiasm fades, other priorities emerge. Building governance triggers and KPI that create automatic accountability is how you counteract this. This stage is designed to make the CSMS institutionally self-sustaining.</div>
+      </div>
+
+      <div class="section-title">Element: Conformance (§4.4.2)</div>
+      <table class="req-table">
+        <thead><tr><th>Clause</th><th>Requirement</th><th>Level</th></tr></thead>
+        <tbody>
+          <tr><td><span class="req-id">4.4.2.1</span></td><td>Specify the audit programme methodology — how audits are planned, conducted, and reported</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.4.2.2</span></td><td>Conduct periodic IACS audits to validate that security policies and procedures are performing as intended and meet zone security objectives</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.4.2.3</span></td><td>Define KPIs and success criteria for monitoring conformance; express audit results as performance against these metrics to show security trends</td><td><span class="req-should">SHOULD</span></td></tr>
+          <tr><td><span class="req-id">4.4.2.4</span></td><td>Establish a document audit trail — list of documents and reports required to evidence compliance</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.4.2.5</span></td><td>Define what non-conformance means and document punitive measures</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.4.2.6</span></td><td>Specify required auditor competency; determine required level of auditor independence</td><td><span class="req-should">SHOULD</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">KPI Programme Design (Annex A §A.4.2.3)</div>
+      <div class="skill-grid">
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(247,201,72,0.12)">📈</div>
+            <div class="skill-card-title">7-Step KPI Framework</div>
+          </div>
+          <div class="skill-card-desc">The standard defines a 7-step metrics programme: (1) Define goals/objectives, (2) Decide metrics, (3) Develop generation strategies, (4) Establish benchmarks/targets, (5) Determine reporting audience, (6) Create action plan, (7) Establish review/refinement cycle.</div>
+          <div class="skill-clause">Annex A §A.4.2.4.2 — Additional practices</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(247,201,72,0.12)">📉</div>
+            <div class="skill-card-title">Example KPIs for Self-Governance</div>
+          </div>
+          <div class="skill-card-desc">% of security audit weaknesses fixed by agreed date; % conformance with security standards; % IACS roles with qualified personnel; patch lag days for critical vulnerabilities; incident drill frequency vs. plan; account review completion rate.</div>
+          <div class="skill-clause">Annex A §A.4.2.3 — KPI guidance</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <div class="skill-icon" style="background:rgba(247,201,72,0.12)">🔔</div>
+            <div class="skill-card-title">Scheduled vs. Unscheduled Audits</div>
+          </div>
+          <div class="skill-card-desc">Scheduled: regular periodic reviews spread uniformly across the audit period. Unscheduled: triggered by incidents (virus outbreak, security breach, asset addition/removal), major changes, or threshold breaches. Both types must be defined in your audit programme.</div>
+          <div class="skill-clause">Annex A §A.4.2.2</div>
+        </div>
+      </div>
+
+      <div class="section-title">Element: Review, Improve & Maintain the CSMS (§4.4.3)</div>
+      <table class="req-table">
+        <thead><tr><th>Clause</th><th>Requirement</th><th>Level</th></tr></thead>
+        <tbody>
+          <tr><td><span class="req-id">4.4.3.1</span></td><td>Assign an organisation to manage and coordinate CSMS changes using a defined change method</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.4.3.2</span></td><td>Periodically evaluate the overall CSMS to ensure security objectives are being met</td><td>Req.</td></tr>
+          <tr><td><span class="req-id">4.4.3.3</span></td><td>Establish a list of change triggers with thresholds — minimum triggers: serious security incidents, legal/regulatory changes, changes in risk, major IACS changes</td><td><span class="req-should">SHOULD</span></td></tr>
+          <tr><td><span class="req-id">4.4.3.4</span></td><td>Identify and implement corrective and preventive actions that modify the CSMS to meet security objectives</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.4.3.5</span></td><td>Review risk tolerance when major changes occur (technology, business objectives, threats, social climate)</td><td><span class="req-should">SHOULD</span></td></tr>
+          <tr><td><span class="req-id">4.4.3.6</span></td><td>Monitor industry CSMS best practices and evaluate their applicability to your programme</td><td><span class="req-should">SHOULD</span></td></tr>
+          <tr><td><span class="req-id">4.4.3.7</span></td><td>Identify applicable and changing legislation relevant to cyber security</td><td><span class="req-shall">SHALL</span></td></tr>
+          <tr><td><span class="req-id">4.4.3.8</span></td><td>Actively seek and report employee feedback on security suggestions to senior management</td><td><span class="req-should">SHOULD</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">The 5-Step CSMS Change Management Process (Annex A §A.4.3.5)</div>
+      <div class="practice-list">
+        <div class="practice-item">
+          <div class="practice-bullet baseline"></div>
+          <div class="practice-text"><strong>Step 1 — Define the current CSMS:</strong> Before any change, fully document the current management system. All policies, assets, and procedures related to the CSMS must be identified and understood by all stakeholders.</div>
+        </div>
+        <div class="practice-item">
+          <div class="practice-bullet baseline"></div>
+          <div class="practice-text"><strong>Step 2 — Define procedures for proposing and assessing changes:</strong> Review for compliance and effectiveness, identify weaknesses and gaps, consider industry best practices and this standard's requirements. Document proposed changes concisely for stakeholder review.</div>
+        </div>
+        <div class="practice-item">
+          <div class="practice-bullet baseline"></div>
+          <div class="practice-text"><strong>Step 3 — Propose and evaluate changes:</strong> Present to stakeholders. Review for negative/unforeseen side effects. Evaluate against original requirements and test suites. Validate any new cyber security technology before incorporating — especially critical in OT.</div>
+        </div>
+        <div class="practice-item">
+          <div class="practice-bullet baseline"></div>
+          <div class="practice-text"><strong>Step 4 — Implement CSMS changes:</strong> Follow company procedures. Document all changes. Obtain written approval from key stakeholders. For technical changes: special attention to systems testing, validation, and control vendor involvement (HSE implications).</div>
+        </div>
+        <div class="practice-item">
+          <div class="practice-bullet baseline"></div>
+          <div class="practice-text"><strong>Step 5 — Monitor CSMS changes:</strong> With the revised CSMS in place, monitor and evaluate its performance. Conduct a review on a regular basis and whenever further changes occur.</div>
+        </div>
+      </div>
+
+      <div class="section-title">Stage 5: Mastery Self-Assessment Checklist</div>
+      <div class="checklist" id="checklist-5">
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Can run a full CSMS audit without external guidance</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Have a functioning KPI dashboard reported to management</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Change triggers and thresholds documented and tested</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>At least one complete incident response drill completed and debriefed</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Risk assessment repeated at least once (triggered by change or elapsed time)</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Non-conformance cases identified, documented, and resolved</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>CSMS updated at least once based on incident/audit findings</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Applicable legislation monitored for changes (4.4.3.7)</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Employee security suggestions formally collected and reported up</div>
+        <div class="checklist-item" onclick="toggle(this)"><div class="check-box">✓</div>Audit trail documents sufficient to evidence conformance to any external reviewer</div>
+      </div>
+
+      <div class="section-title">Advanced: Continuous Improvement Strategies (Annex A §A.4.3.6.2)</div>
+      <div class="practice-list">
+        <div class="practice-item">
+          <div class="practice-bullet additional"></div>
+          <div class="practice-text">Conduct benchmarking both within and outside your industry — use external validation to confirm improvements are genuine and not self-serving</div>
+        </div>
+        <div class="practice-item">
+          <div class="practice-bullet additional"></div>
+          <div class="practice-text">Actively seek employee feedback on security suggestions and report back to senior management on performance shortcomings</div>
+        </div>
+        <div class="practice-item">
+          <div class="practice-bullet additional"></div>
+          <div class="practice-text">Apply Six Sigma or equivalent business methodologies for measuring, analysing, and sustaining cyber security improvements</div>
+        </div>
+        <div class="practice-item">
+          <div class="practice-bullet additional"></div>
+          <div class="practice-text">Develop forensic investigation capabilities for IACS systems — either internal capability or contracted specialist on retainer</div>
+        </div>
+        <div class="practice-item">
+          <div class="practice-bullet additional"></div>
+          <div class="practice-text">Participate in peer-to-peer and cross-industry mutual assistance activities — learn from others' incident experience before you face the same situation</div>
+        </div>
+      </div>
+
+      <div class="section-title">Final Deliverables — A Complete, Autonomous CSMS</div>
+      <div class="deliverable-grid">
+        <div class="deliverable-card"><span class="deliverable-icon">📊</span><div><div class="deliverable-name">Audit Programme</div><div class="deliverable-desc">Methodology, schedule, auditor competency criteria, document trail</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">📈</span><div><div class="deliverable-name">KPI Dashboard</div><div class="deliverable-desc">7-step metrics programme with benchmarks and reporting cadence</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">⚡</span><div><div class="deliverable-name">Change Trigger Register</div><div class="deliverable-desc">Documented triggers and thresholds for CSMS reviews</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">⚖️</span><div><div class="deliverable-name">Non-Conformance Procedure</div><div class="deliverable-desc">Definitions, punitive measures, corrective action process</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">🏆</span><div><div class="deliverable-name">Management Review Process</div><div class="deliverable-desc">Periodic executive review of CSMS effectiveness</div></div></div>
+        <div class="deliverable-card"><span class="deliverable-icon">📚</span><div><div class="deliverable-name">Complete Audit Evidence Package</div><div class="deliverable-desc">All records sufficient for external conformance assessment</div></div></div>
+      </div>
+
+      <div class="milestone">
+        <span class="milestone-icon">🏆</span>
+        <div>
+          <div class="milestone-title">Mastery: Your CSMS now finds its own weaknesses, fixes them, and documents the improvement — without external prompting.</div>
+          <div class="milestone-desc">You have reached mastery when: KPIs run automatically, audit findings feed directly into the next CSMS update cycle, personnel know their roles without being reminded, and you can demonstrate to an external auditor that the CSMS has been actively maintained through at least one full review cycle. The CSMS is now an institutional asset, not a personal project.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+function showStage(n) {
+  // Hide all panels
+  document.querySelectorAll('.stage-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active'));
+
+  // Show target
+  document.getElementById('stage-' + n).classList.add('active');
+  document.querySelectorAll('.stage-btn')[n-1].classList.add('active');
+  document.querySelectorAll('.progress-step')[n-1].classList.add('active');
+}
+
+function toggle(el) {
+  el.classList.toggle('checked');
+}
+
+// Init
+showStage(1);
+</script>
+
+</body>
+</html>
