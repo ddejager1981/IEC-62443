@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OT Risk Assessment Methodologies — IEC 62443-2-1 Training</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #0B1929;
+  --navy2:   #112035;
+  --navy3:   #162845;
+  --teal:    #00BFA5;
+  --tealLt:  #B2EDE5;
+  --amber:   #FFB300;
+  --amberLt: #FFF3CD;
+  --coral:   #EF5350;
+  --coralLt: #FDECEA;
+  --sage:    #4CAF82;
+  --sageLt:  #E8F5EE;
+  --blue:    #2196F3;
+  --blueLt:  #E3F2FD;
+  --purple:  #7C6BFF;
+  --purpleLt:#EDE9FF;
+  --text:    #D4DDE8;
+  --textMd:  #8FA3B8;
+  --textSm:  #5B7A96;
+  --border:  rgba(255,255,255,0.07);
+  --borderMd:rgba(255,255,255,0.12);
+  --card:    rgba(255,255,255,0.04);
+  --cardHov: rgba(255,255,255,0.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--navy);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:15px;
+  line-height:1.65;
+  min-height:100vh;
+}
+
+/* ── LAYOUT ──────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+
+/* ── SIDEBAR ─────────────────────────────────────────── */
+.sidebar{
+  background:var(--navy2);
+  border-right:1px solid var(--border);
+  position:sticky;top:0;height:100vh;
+  overflow-y:auto;display:flex;flex-direction:column;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+}
+.sidebar-brand{padding:24px 20px 20px;border-bottom:1px solid var(--border)}
+.brand-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--teal);text-transform:uppercase;margin-bottom:4px}
+.brand-title{font-family:'Fraunces',serif;font-size:18px;color:#fff;line-height:1.2;font-weight:500}
+
+.nav-section{padding:16px 12px 8px}
+.nav-section-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--textSm);padding:0 8px 8px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:8px;
+  cursor:pointer;margin-bottom:2px;
+  transition:all .18s;font-size:13.5px;
+  color:var(--textMd);font-weight:400;
+  border:1px solid transparent;
+}
+.nav-item:hover{background:var(--card);color:var(--text)}
+.nav-item.active{background:rgba(0,191,165,0.1);color:var(--teal);border-color:rgba(0,191,165,0.2);font-weight:500}
+.nav-num{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  background:var(--border);color:var(--textSm);flex-shrink:0;
+  transition:all .18s;
+}
+.nav-item.active .nav-num{background:var(--teal);color:var(--navy)}
+.nav-divider{height:1px;background:var(--border);margin:8px 12px}
+
+.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid var(--border)}
+.progress-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--textSm);margin-bottom:8px}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--teal);border-radius:2px;transition:width .4s ease;width:0%}
+.progress-text{font-size:12px;color:var(--textMd);margin-top:6px}
+
+/* ── MAIN CONTENT ────────────────────────────────────── */
+.main{overflow-y:auto;height:100vh;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+
+.stage-panel{display:none;animation:fadeIn .3s ease}
+.stage-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PAGE HERO ───────────────────────────────────────── */
+.page-hero{
+  padding:56px 48px 40px;
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.page-hero::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,191,165,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.stage-eyebrow{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--teal);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.stage-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.page-title{
+  font-family:'Fraunces',serif;font-size:clamp(28px,4vw,42px);
+  font-weight:700;color:#fff;line-height:1.1;margin-bottom:14px;
+}
+.page-title em{color:var(--teal);font-style:italic}
+.page-subtitle{font-size:15px;color:var(--textMd);max-width:600px;line-height:1.7}
+.hero-meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:24px}
+.hero-badge{
+  display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--textMd);
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:5px 14px;
+}
+
+/* ── CONTENT BODY ────────────────────────────────────── */
+.content-body{padding:40px 48px 80px;max-width:900px}
+
+/* ── SECTION ─────────────────────────────────────────── */
+.section{margin-bottom:52px}
+.section-title{
+  font-family:'Fraunces',serif;font-size:22px;font-weight:500;
+  color:#fff;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.section-intro{color:var(--textMd);font-size:14.5px;line-height:1.7;margin-bottom:24px}
+
+/* ── CARDS ───────────────────────────────────────────── */
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:22px 24px;margin-bottom:12px;
+}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.card-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+
+.card-title{font-weight:500;color:#fff;margin-bottom:6px;font-size:14px}
+.card-body{color:var(--textMd);font-size:13.5px;line-height:1.65}
+
+/* accent left border variants */
+.card-teal{border-left:3px solid var(--teal)}
+.card-amber{border-left:3px solid var(--amber)}
+.card-coral{border-left:3px solid var(--coral)}
+.card-blue{border-left:3px solid var(--blue)}
+.card-purple{border-left:3px solid var(--purple)}
+.card-sage{border-left:3px solid var(--sage)}
+
+/* ── CALLOUT ─────────────────────────────────────────── */
+.callout{
+  border-radius:10px;padding:16px 20px;margin-bottom:20px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.callout-teal{background:rgba(0,191,165,.08);border:1px solid rgba(0,191,165,.2)}
+.callout-amber{background:rgba(255,179,0,.08);border:1px solid rgba(255,179,0,.2)}
+.callout-coral{background:rgba(239,83,80,.08);border:1px solid rgba(239,83,80,.2)}
+.callout-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.callout-text{font-size:13.5px;line-height:1.65;color:var(--text)}
+.callout-text strong{color:#fff}
+
+/* ── TABLE ───────────────────────────────────────────── */
+.tbl{width:100%;border-collapse:collapse;margin-bottom:20px;font-size:13px}
+.tbl th{
+  background:var(--navy3);padding:10px 14px;text-align:left;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--textSm);font-weight:400;
+}
+.tbl td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--textMd);vertical-align:top;line-height:1.55}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--card)}
+.tbl td strong{color:var(--text)}
+
+/* ── BADGES ──────────────────────────────────────────── */
+.badge{display:inline-block;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:500}
+.badge-teal{background:rgba(0,191,165,.15);color:var(--teal)}
+.badge-amber{background:rgba(255,179,0,.15);color:var(--amber)}
+.badge-coral{background:rgba(239,83,80,.15);color:#ff7675}
+.badge-blue{background:rgba(33,150,243,.15);color:#64b5f6}
+.badge-sage{background:rgba(76,175,130,.15);color:var(--sage)}
+.badge-gray{background:rgba(255,255,255,.08);color:var(--textMd)}
+
+/* ── STEP PROCESS ────────────────────────────────────── */
+.steps{margin-bottom:24px}
+.step{display:flex;gap:16px;margin-bottom:4px;padding-bottom:4px;position:relative}
+.step-line{position:absolute;left:15px;top:34px;bottom:-4px;width:1px;background:var(--border)}
+.step:last-child .step-line{display:none}
+.step-num{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--teal);color:var(--navy);
+  font-family:'DM Mono',monospace;font-size:12px;font-weight:500;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.step-content{padding:4px 0 24px}
+.step-label{font-weight:500;color:#fff;margin-bottom:4px}
+.step-body{font-size:13.5px;color:var(--textMd);line-height:1.65}
+
+/* ── COMPARISON ──────────────────────────────────────── */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:20px}
+.compare-header{background:var(--navy3);padding:12px 18px;font-size:13px;font-weight:500}
+.compare-it .compare-header{color:#64b5f6}
+.compare-ot .compare-header{color:var(--teal)}
+.compare-row{display:contents}
+.compare-cell{padding:10px 18px;font-size:13px;color:var(--textMd);border-top:1px solid var(--border);line-height:1.55}
+.compare-cell strong{color:var(--text)}
+
+/* ── METHODOLOGY SCORE BAR ───────────────────────────── */
+.method-score-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.method-score-label{font-size:12px;color:var(--textMd);width:130px;flex-shrink:0}
+.score-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.score-fill-teal{background:var(--teal)}
+.score-fill-amber{background:var(--amber)}
+.score-fill-blue{background:var(--blue)}
+.score-fill-coral{background:var(--coral)}
+.score-fill-purple{background:var(--purple)}
+.score-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--textSm);width:28px;text-align:right}
+
+/* ── WORKED EXAMPLE ──────────────────────────────────── */
+.example-box{
+  background:var(--navy3);border:1px solid var(--borderMd);
+  border-radius:12px;overflow:hidden;margin-bottom:24px;
+}
+.example-header{
+  background:rgba(0,0,0,.25);padding:14px 20px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+}
+.example-tag{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;background:rgba(0,191,165,.15);
+  color:var(--teal);border-radius:4px;padding:3px 8px;
+}
+.example-title{font-size:14px;font-weight:500;color:#fff}
+.example-body{padding:20px 22px}
+
+/* ── RISK MATRIX ─────────────────────────────────────── */
+.risk-matrix{display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr;gap:2px;margin-bottom:20px}
+.matrix-cell{
+  padding:10px 12px;border-radius:4px;text-align:center;
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+}
+.matrix-header{background:var(--navy3);color:var(--textSm);font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.matrix-row-label{background:var(--navy3);color:var(--textSm);font-size:10px;text-align:right;display:flex;align-items:center;justify-content:flex-end;padding-right:12px}
+.matrix-low{background:rgba(76,175,130,.15);color:var(--sage)}
+.matrix-med{background:rgba(255,179,0,.15);color:var(--amber)}
+.matrix-high{background:rgba(239,83,80,.15);color:#ff7675}
+.matrix-crit{background:rgba(239,83,80,.3);color:#ff4444}
+
+/* ── INTERACTIVE DECISION MATRIX ────────────────────── */
+.dm-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.dm-btn{
+  font-size:12.5px;color:var(--textMd);
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:6px 16px;cursor:pointer;
+  transition:all .15s;font-family:'DM Sans',sans-serif;
+}
+.dm-btn:hover{border-color:var(--borderMd);color:var(--text)}
+.dm-btn.active{background:rgba(0,191,165,.15);border-color:rgba(0,191,165,.4);color:var(--teal);font-weight:500}
+
+.dm-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px}
+.dm-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:16px;transition:all .2s;
+}
+.dm-card.primary{border-color:rgba(0,191,165,.4);background:rgba(0,191,165,.06)}
+.dm-card.supporting{border-color:rgba(124,107,255,.3);background:rgba(124,107,255,.05)}
+.dm-card.dimmed{opacity:.25}
+.dm-card-name{font-size:12.5px;font-weight:500;color:#fff;margin-bottom:6px}
+.dm-card-badge{display:inline-block;border-radius:12px;padding:2px 8px;font-size:10px;font-weight:500;margin-bottom:8px}
+.dm-badge-primary{background:rgba(0,191,165,.2);color:var(--teal)}
+.dm-badge-support{background:rgba(124,107,255,.2);color:var(--purple)}
+.dm-badge-limited{background:rgba(255,255,255,.07);color:var(--textSm)}
+.dm-score-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:8px}
+.dm-score-fill{height:100%;border-radius:2px;transition:width .5s ease}
+.dm-card-desc{font-size:11.5px;color:var(--textMd);line-height:1.55}
+
+.result-banner{
+  background:rgba(0,191,165,.08);border:1px solid rgba(0,191,165,.2);
+  border-radius:10px;padding:14px 18px;margin-bottom:20px;
+}
+.result-banner h4{font-size:13.5px;font-weight:500;color:var(--teal);margin-bottom:4px}
+.result-banner p{font-size:13px;color:var(--textMd);line-height:1.6}
+
+/* ── QUIZ ────────────────────────────────────────────── */
+.quiz-q{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:22px 24px;margin-bottom:16px;
+}
+.quiz-question{font-size:15px;color:#fff;margin-bottom:16px;font-weight:500;line-height:1.5}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{
+  display:flex;align-items:center;gap:12px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:11px 16px;cursor:pointer;
+  transition:all .15s;font-size:13.5px;color:var(--textMd);
+}
+.quiz-opt:hover{border-color:var(--borderMd);color:var(--text)}
+.quiz-opt.selected{border-color:var(--teal);background:rgba(0,191,165,.08);color:#fff}
+.quiz-opt.correct{border-color:var(--sage);background:rgba(76,175,130,.1);color:var(--sage)}
+.quiz-opt.wrong{border-color:var(--coral);background:rgba(239,83,80,.08);color:#ff7675}
+.quiz-dot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--borderMd);flex-shrink:0;transition:all .15s}
+.quiz-opt.selected .quiz-dot{border-color:var(--teal);background:var(--teal)}
+.quiz-opt.correct .quiz-dot{border-color:var(--sage);background:var(--sage)}
+.quiz-opt.wrong .quiz-dot{border-color:var(--coral);background:var(--coral)}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:13px;line-height:1.6;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(76,175,130,.1);border:1px solid rgba(76,175,130,.3);color:var(--sage)}
+.quiz-feedback.wrong{background:rgba(239,83,80,.08);border:1px solid rgba(239,83,80,.2);color:#ff7675}
+.quiz-btn{
+  font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;
+  padding:9px 22px;border-radius:8px;cursor:pointer;border:none;
+  background:var(--teal);color:var(--navy);margin-top:14px;transition:all .15s;
+}
+.quiz-btn:hover{background:#00d4bb}
+.quiz-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── NAV FOOTER ──────────────────────────────────────── */
+.stage-nav{
+  display:flex;justify-content:space-between;padding:24px 48px;
+  border-top:1px solid var(--border);
+  position:sticky;bottom:0;background:var(--navy);
+}
+.nav-btn{
+  font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;
+  padding:9px 22px;border-radius:8px;cursor:pointer;border:none;
+  transition:all .15s;
+}
+.nav-btn-prev{background:var(--card);color:var(--textMd);border:1px solid var(--border)}
+.nav-btn-prev:hover{color:var(--text);border-color:var(--borderMd)}
+.nav-btn-next{background:var(--teal);color:var(--navy)}
+.nav-btn-next:hover{background:#00d4bb}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed}
+
+/* ── HIGHLIGHT TAG ───────────────────────────────────── */
+.hl{color:var(--teal);font-weight:500}
+.hl-amber{color:var(--amber);font-weight:500}
+.hl-coral{color:#ff7675;font-weight:500}
+
+/* ── CODE/MONO ───────────────────────────────────────── */
+code{
+  font-family:'DM Mono',monospace;font-size:12px;
+  background:rgba(255,255,255,.08);border-radius:4px;padding:1px 6px;color:var(--tealLt);
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:800px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .content-body,.page-hero{padding-left:24px;padding-right:24px}
+  .card-grid,.card-grid-3,.compare-grid{grid-template-columns:1fr}
+  .dm-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ══ SIDEBAR ══════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-label">IEC 62443-2-1:2010</div>
+    <div class="brand-title">OT Risk Assessment<br>Methodology Training</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Learning Stages</div>
+
+    <div class="nav-item active" onclick="showStage(1)" id="nav1">
+      <div class="nav-num">1</div>
+      <span>OT vs IT Risk Fundamentals</span>
+    </div>
+    <div class="nav-item" onclick="showStage(2)" id="nav2">
+      <div class="nav-num">2</div>
+      <span>The 5 Methodologies Explained</span>
+    </div>
+    <div class="nav-item" onclick="showStage(3)" id="nav3">
+      <div class="nav-num">3</div>
+      <span>The Decision Matrix</span>
+    </div>
+    <div class="nav-item" onclick="showStage(4)" id="nav4">
+      <div class="nav-num">4</div>
+      <span>Worked Examples</span>
+    </div>
+    <div class="nav-item" onclick="showStage(5)" id="nav5">
+      <div class="nav-num">5</div>
+      <span>Application & Mastery</span>
+    </div>
+
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Tools</div>
+    <div class="nav-item" onclick="showStage(6)" id="nav6">
+      <div class="nav-num" style="background:rgba(124,107,255,.2);color:var(--purple)">★</div>
+      <span>Knowledge Check</span>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="progress-label">COURSE PROGRESS</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">Stage 1 of 5</div>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══════════════════════════════════════════════ -->
+<main class="main">
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- STAGE 1 — OT vs IT RISK FUNDAMENTALS               -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="stage-panel active" id="stage1">
+  <div class="page-hero">
+    <div class="stage-eyebrow"><div class="stage-eyebrow-dot"></div>Stage 1 · Foundations</div>
+    <h1 class="page-title">Why OT Risk Assessment is<br><em>fundamentally different</em> from IT</h1>
+    <p class="page-subtitle">Before touching any methodology, you must understand why the risk assessment tools you use for enterprise IT will fail — or worse, create new hazards — when applied to Industrial Automation and Control Systems.</p>
+    <div class="hero-meta">
+      <div class="hero-badge">⏱ 45 min</div>
+      <div class="hero-badge">📍 IEC 62443-2-1 §4.2</div>
+      <div class="hero-badge">🎯 IT risk professionals</div>
+    </div>
+  </div>
+
+  <div class="content-body">
+
+    <div class="section">
+      <h2 class="section-title">What the standard actually says</h2>
+      <p class="section-intro">IEC 62443-2-1:2010 §4.2.3.1 (SHALL) requires organisations to select a specific risk assessment methodology. But before selecting one, you must understand what makes the IACS environment different — because the methodology must fit the environment, not the other way around.</p>
+
+      <div class="callout callout-amber">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-text"><strong>The §4.2.3.1 SHALL requirement:</strong> "The organisation SHALL select a particular risk assessment methodology." This is not a suggestion. You must document your chosen methodology and justify the selection. If you choose a methodology that doesn't fit your environment, your risk assessment results will be wrong — and your CSMS will be built on a false foundation.</div>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-it">
+          <div class="compare-header">🖥️ IT security risk assessment</div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Primary goal:</strong> Confidentiality of data</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Worst case:</strong> Data breach, reputational damage, financial loss</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Availability priority:</strong> Important but secondary to confidentiality</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Downtime tolerance:</strong> Hours — acceptable with good BCP</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Patch cadence:</strong> Monthly patch Tuesday — standard practice</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Account lockout:</strong> Safe and standard — security best practice</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>System lifetime:</strong> 3–5 years — refresh cycles planned</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Vulnerability scanning:</strong> Routine — run quarterly or continuously</div>
+          </div>
+        </div>
+        <div class="compare-ot">
+          <div class="compare-header">🏭 OT / IACS risk assessment</div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Primary goal:</strong> Safety, availability, and process integrity</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Worst case:</strong> Personnel fatality, environmental release, community harm</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Availability priority:</strong> <span class="hl-coral">Highest priority</span> — often more critical than confidentiality</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Downtime tolerance:</strong> <span class="hl-coral">Often zero</span> — unplanned shutdown can itself cause HSE incident</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Patch cadence:</strong> Vendor-coordinated, outage-window dependent — often annual</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Account lockout:</strong> <span class="hl-coral">Can be catastrophic</span> — locking a HMI operator during an emergency</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>System lifetime:</strong> 20–30+ years — PLCs from the 1990s still in service</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell"><strong>Vulnerability scanning:</strong> <span class="hl-coral">Can crash PLCs</span> — active scanning requires vendor approval</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">The three risk domains in OT</h2>
+      <p class="section-intro">OT risk assessment must simultaneously address three interlocking domains. No single IT risk methodology handles all three. This is why OT assessment almost always requires a hybrid approach.</p>
+
+      <div class="card-grid-3">
+        <div class="card card-teal">
+          <div class="card-title">🔒 Cyber domain</div>
+          <div class="card-body">Attack paths, threat actors, vulnerability exploitation, network exposure, authentication gaps. This is where IT risk tools have the most applicability — but they must be adapted.</div>
+        </div>
+        <div class="card card-amber">
+          <div class="card-title">⚠️ Physical / Safety domain</div>
+          <div class="card-body">What happens physically when a cyber attack succeeds. A manipulated PLC setpoint isn't a data breach — it's a vessel overpressure or a hoist collision. The consequence chain is physical, not digital.</div>
+        </div>
+        <div class="card card-coral">
+          <div class="card-title">🔄 Operational domain</div>
+          <div class="card-body">Production continuity, process integrity, and the risk created by security controls themselves. An access lockout that prevents an operator from responding to an alarm creates a new risk.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Why IT risk methodologies fall short</h2>
+      <p class="section-intro">IT risk practitioners often reach for familiar tools — ISO 27005, FAIR, OCTAVE — when asked to assess OT systems. Here is specifically where and why they fail.</p>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Practical Example</span>
+          <span class="example-title">Applying ISO 27005 to a refinery DCS — what goes wrong</span>
+        </div>
+        <div class="example-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-line"></div>
+              <div class="step-content">
+                <div class="step-label">Asset identification</div>
+                <div class="step-body">ISO 27005 asks you to identify information assets. The DCS controller is listed as an asset. ✓ <br><strong>Problem:</strong> The control program logic, the setpoint table, and the cause-and-effect matrix are not information assets in the IT sense — they are the physical process safety case. Losing their integrity is not a "data integrity" issue — it's a process hazard.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-line"></div>
+              <div class="step-content">
+                <div class="step-label">Threat identification</div>
+                <div class="step-body">ISO 27005 focuses on threats to information confidentiality, integrity, and availability. <br><strong>Problem:</strong> The most dangerous threats to a DCS are not data theft — they are process manipulation (changing a setpoint to 200% of safe operating level), safety system defeat (disconnecting an interlock), and denial of view (flooding the HMI so operators cannot see alarm states). These threat types are not captured in standard IT threat libraries.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-line"></div>
+              <div class="step-content">
+                <div class="step-label">Impact assessment</div>
+                <div class="step-body">ISO 27005 scores impact in terms of financial loss, reputational damage, and regulatory penalty. <br><strong>Problem:</strong> The primary impact of a DCS cyber incident is physical — personnel injury or fatality, environmental release, community evacuation. These are orders of magnitude more significant than financial loss, but ISO 27005 has no native scale for them. Risk scores are systematically underestimated.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-line"></div>
+              <div class="step-content">
+                <div class="step-label">Control selection</div>
+                <div class="step-body">ISO 27005 recommends controls from ISO 27001 Annex A. <br><strong>Problem:</strong> Many standard IT controls create new OT risks. Mandatory password complexity policies on a DCS operator workstation mean operators cannot log in quickly during an emergency. Automated session timeouts on HMIs leave critical control screens unattended. The controls weren't designed with a process safety case in mind.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-teal">
+            <span class="callout-icon">💡</span>
+            <div class="callout-text"><strong>The IEC 62443-2-1 approach:</strong> The standard explicitly recognises this gap. §4.2.3.11 requires that physical, HSE, and cyber security risk results be <em>integrated into a unified risk picture</em>. The methodology you choose must be capable of capturing safety consequences — not just information security impacts.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">The IEC 62443 risk model</h2>
+      <p class="section-intro">The standard (§4.2.3) structures risk analysis in a specific sequence. Understanding this sequence is essential before selecting a methodology — your chosen method must be capable of executing each step.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">High-level risk assessment first <span class="badge badge-coral" style="font-size:10px;margin-left:8px">§4.2.3.3 SHALL</span></div>
+            <div class="step-body">Characterise threats, general vulnerabilities, and consequences at the system level before going deeper. This produces the risk narrative that management and safety teams need. Annex B is explicit: jumping to detailed vulnerability assessment without this step produces findings that are ignored.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">System prioritisation <span class="badge badge-coral" style="font-size:10px;margin-left:8px">§4.2.3.6 SHALL</span></div>
+            <div class="step-body">Rank systems by risk level. Detailed assessment resources go to the highest-priority systems first. The prioritisation criteria (safety consequence × connectivity × existing controls) must be documented and defensible.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">Detailed vulnerability assessment <span class="badge badge-coral" style="font-size:10px;margin-left:8px">§4.2.3.7 SHALL</span></div>
+            <div class="step-body">Technical assessment of specific exploitable weaknesses on prioritised systems — firmware versions, authentication gaps, network exposure, unpatched vulnerabilities. This is where ICS-specific tools and expertise are required.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">Detailed risk assessment using the selected methodology <span class="badge badge-coral" style="font-size:10px;margin-left:8px">§4.2.3.9 SHALL</span></div>
+            <div class="step-body">Apply your documented methodology to produce scored, prioritised risk statements. Every risk must trace back to a specific threat, a specific vulnerability, and a specific consequence. These results go into the Risk Register (CSMS-RA-008) and drive all countermeasure selection.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-teal">
+        <span class="callout-icon">🎯</span>
+        <div class="callout-text"><strong>Key insight for IT risk professionals:</strong> In IT risk, you often start with vulnerabilities (scan the network, find the CVEs) and work backwards to threat and impact. In OT, you must start with the <em>consequence</em> — what physical harm could occur — and work forwards to identify which threats and vulnerabilities could cause it. The direction of analysis is reversed.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Self-check — Stage 1</h2>
+      <div class="quiz-q" id="q1-1">
+        <div class="quiz-question">An IT risk team applies standard account lockout policy (5 failed attempts = locked) to a DCS operator workstation. Which consequence best explains why this is dangerous in an OT context?</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="selectOpt(this,'q1-1','wrong')"><div class="quiz-dot"></div>It creates a compliance gap against ISO 27001</div>
+          <div class="quiz-opt" onclick="selectOpt(this,'q1-1','wrong')"><div class="quiz-dot"></div>Operators will write passwords on paper, reducing confidentiality</div>
+          <div class="quiz-opt" onclick="selectOpt(this,'q1-1','correct')"><div class="quiz-dot"></div>An operator may be locked out of the HMI during a process emergency, preventing them from responding to an alarm</div>
+          <div class="quiz-opt" onclick="selectOpt(this,'q1-1','wrong')"><div class="quiz-dot"></div>Regulatory fines for non-compliance with IEC 62443</div>
+        </div>
+        <div class="quiz-feedback" id="q1-1-fb"></div>
+      </div>
+
+      <div class="quiz-q" id="q1-2">
+        <div class="quiz-question">IEC 62443-2-1:2010 §4.2.3.1 requires the organisation to:</div>
+        <div class="quiz-options">
+          <div class="quiz-opt" onclick="selectOpt(this,'q1-2','wrong')"><div class="quiz-dot"></div>Use HAZOP as the mandatory methodology for all IACS</div>
+          <div class="quiz-opt" onclick="selectOpt(this,'q1-2','correct')"><div class="quiz-dot"></div>Select a specific methodology, document the selection, and justify the choice</div>
+          <div class="quiz-opt" onclick="selectOpt(this,'q1-2','wrong')"><div class="quiz-dot"></div>Conduct a penetration test of all OT systems annually</div>
+          <div class="quiz-opt" onclick="selectOpt(this,'q1-2','wrong')"><div class="quiz-dot"></div>Apply ISO 27005 to all information assets including IACS</div>
+        </div>
+        <div class="quiz-feedback" id="q1-2-fb"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn nav-btn-prev" disabled>← Previous</button>
+    <button class="nav-btn nav-btn-next" onclick="showStage(2)">The 5 Methodologies →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- STAGE 2 — THE 5 METHODOLOGIES                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="stage-panel" id="stage2">
+  <div class="page-hero">
+    <div class="stage-eyebrow"><div class="stage-eyebrow-dot"></div>Stage 2 · Core Knowledge</div>
+    <h1 class="page-title">The <em>5 methodologies</em><br>every OT assessor must know</h1>
+    <p class="page-subtitle">A deep dive into each methodology — what it is, how it works in OT, where it excels, and exactly where it fails. Practical worked examples using real IACS systems throughout.</p>
+    <div class="hero-meta">
+      <div class="hero-badge">⏱ 90 min</div>
+      <div class="hero-badge">📍 §4.2.3.1 Methodology Selection</div>
+      <div class="hero-badge">🎯 Primary + supporting methods</div>
+    </div>
+  </div>
+
+  <div class="content-body">
+
+    <!-- METHOD 1: IEC 62443 Risk Matrix -->
+    <div class="section">
+      <h2 class="section-title">Method 1 · ISA/IEC 62443 Risk Matrix</h2>
+      <p class="section-intro">This is the <strong style="color:#fff">primary methodology</strong> for IACS cyber risk assessment. It is purpose-built for OT environments and produces Target Security Level (SL-T) outputs that directly drive countermeasure selection under the CSMS.</p>
+
+      <div class="card-grid">
+        <div class="card card-teal">
+          <div class="card-title">✅ Where it excels</div>
+          <div class="card-body">Zone-based model maps directly to OT network architecture. SL-T output ties risk directly to required controls. Handles adversarial cyber threats natively. Aligned to IEC 62443-2-1. Accepted by regulators and insurers. Scalable across full IACS inventories.</div>
+        </div>
+        <div class="card card-coral">
+          <div class="card-title">⚠️ Where it falls short</div>
+          <div class="card-body">Does not deeply analyse the physical consequence chain — you need HAZOP to understand what "manipulation of hoist control" causes physically. SL-T can become subjective without rigorous threat modelling providing input.</div>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Worked Example — Step by Step</span>
+          <span class="example-title">Assessing a SCADA historian at Sunrise Refinery using IEC 62443 Risk Matrix</span>
+        </div>
+        <div class="example-body">
+          <p style="color:var(--textMd);font-size:13.5px;margin-bottom:18px"><strong style="color:#fff">Scenario:</strong> The SCADA historian at Sunrise Refinery is accessible from the corporate DMZ without authentication. We need to assess the cyber risk using the IEC 62443 risk matrix approach.</p>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-line"></div>
+              <div class="step-content">
+                <div class="step-label">Define the zone</div>
+                <div class="step-body">The historian sits in the <strong>Supervisory Zone (Level 3)</strong>. It connects to the corporate DMZ (external) and to the DCS historian feed (internal, Level 2). This creates a conduit between zones that requires assessment.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-line"></div>
+              <div class="step-content">
+                <div class="step-label">Score likelihood (1–4)</div>
+                <div class="step-body">
+                  <div class="method-score-row"><span class="method-score-label">Threat capability</span><div class="score-track"><div class="score-fill score-fill-teal" style="width:75%"></div></div><span class="score-val">3/4</span></div>
+                  <div class="method-score-row"><span class="method-score-label">Attack motivation</span><div class="score-track"><div class="score-fill score-fill-teal" style="width:75%"></div></div><span class="score-val">3/4</span></div>
+                  <div class="method-score-row"><span class="method-score-label">Vulnerability exposure</span><div class="score-track"><div class="score-fill score-fill-coral" style="width:100%"></div></div><span class="score-val">4/4</span></div>
+                  <p style="font-size:13px;color:var(--textMd);margin-top:8px"><strong>Likelihood = 3</strong> (Medium) — Realistic threat with motivated actors and high exposure, but requires some effort to reach the historian.</p>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-line"></div>
+              <div class="step-content">
+                <div class="step-label">Score consequence (1–4)</div>
+                <div class="step-body">
+                  <div class="method-score-row"><span class="method-score-label">Safety / HSE</span><div class="score-track"><div class="score-fill score-fill-amber" style="width:50%"></div></div><span class="score-val">2/4</span></div>
+                  <div class="method-score-row"><span class="method-score-label">Production loss</span><div class="score-track"><div class="score-fill score-fill-amber" style="width:75%"></div></div><span class="score-val">3/4</span></div>
+                  <div class="method-score-row"><span class="method-score-label">Pivot risk to DCS</span><div class="score-track"><div class="score-fill score-fill-coral" style="width:100%"></div></div><span class="score-val">4/4</span></div>
+                  <p style="font-size:13px;color:var(--textMd);margin-top:8px"><strong>Consequence = 3</strong> (Critical) — The historian itself is not safety-critical, but it provides a lateral movement path to the DCS. If an attacker pivots from the historian to the DCS, the consequence escalates to catastrophic.</p>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-line"></div>
+              <div class="step-content">
+                <div class="step-label">Calculate risk level</div>
+                <div class="step-body">
+                  <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(239,83,80,.15);border:1px solid rgba(239,83,80,.3);border-radius:8px;padding:10px 16px;margin-bottom:12px">
+                    <span style="font-family:'DM Mono',monospace;font-size:13px;color:#ff7675">Likelihood (3) × Consequence (3) = Score 9</span>
+                    <span class="badge badge-coral">HIGH RISK</span>
+                  </div>
+                  <p style="font-size:13px;color:var(--textMd)">Score ≥ 9 = <strong>HIGH</strong>. Countermeasure required within 90 days. The primary countermeasure: require authentication on all historian access, and isolate from the corporate DMZ via a dedicated historian-only interface with strict access controls.</p>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-line"></div>
+              <div class="step-content">
+                <div class="step-label">Determine Target Security Level (SL-T)</div>
+                <div class="step-body">Based on this risk assessment, the historian zone is assigned <strong>SL-T 2</strong> — protection against intentional violation using simple means with low resources. The zone must implement countermeasures that achieve SL-T 2: authentication required, firewall-enforced access, audit logging enabled.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- METHOD 2: HAZOP/LOPA -->
+    <div class="section">
+      <h2 class="section-title">Method 2 · HAZOP / LOPA</h2>
+      <p class="section-intro">HAZOP (Hazard and Operability Study) was created for process safety in chemical and oil & gas industries. It is the foundation of physical safety assessment in IACS environments — but it was not designed for cyber threats.</p>
+
+      <div class="card-grid">
+        <div class="card card-sage">
+          <div class="card-title">✅ Where it excels in OT</div>
+          <div class="card-body">Reveals what cyber-induced deviations cause physically — "what if the pressure signal is 'more' than design?" Integrates with existing process safety documentation. Required for SIL verification under IEC 61511. Familiar to operations and safety engineers who will implement controls.</div>
+        </div>
+        <div class="card card-coral">
+          <div class="card-title">⚠️ Why it fails as a primary cyber method</div>
+          <div class="card-body">Assumes accidental failure — not adversarial intent. Cannot identify cyber attack paths (an attacker who gains access is not a "deviation"). Does not produce SL-T outputs. Meaningless applied to pure software systems like TOS or SCADA historians.</div>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Worked Example</span>
+          <span class="example-title">HAZOP on RTG hoist control — Sunrise Refinery DCS pressure controller</span>
+        </div>
+        <div class="example-body">
+          <p style="color:var(--textMd);font-size:13.5px;margin-bottom:18px"><strong style="color:#fff">How HAZOP works:</strong> Apply guide words (No, More, Less, Reverse, Other Than) to each parameter in the system to identify deviations and their causes and consequences.</p>
+
+          <div class="tbl-wrapper" style="overflow-x:auto">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Parameter</th><th>Guide Word</th><th>Deviation</th><th>Possible Cause</th><th>Cyber Cause</th><th>Consequence</th><th>Severity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pressure signal</strong></td>
+                <td><code>MORE</code></td>
+                <td>Higher pressure reading than actual</td>
+                <td>Sensor failure, impulse line blockage</td>
+                <td><span class="hl">Attacker manipulates sensor reading in DCS</span></td>
+                <td>Controller reduces feed flow → process starved → shutdown</td>
+                <td><span class="badge badge-amber">Medium</span></td>
+              </tr>
+              <tr>
+                <td><strong>Pressure signal</strong></td>
+                <td><code>LESS</code></td>
+                <td>Lower pressure reading than actual</td>
+                <td>Sensor failure, leak in impulse line</td>
+                <td><span class="hl">Attacker spoofs low pressure reading</span></td>
+                <td>Controller increases feed → overpressure → potential vessel failure</td>
+                <td><span class="badge badge-coral">Critical</span></td>
+              </tr>
+              <tr>
+                <td><strong>Setpoint</strong></td>
+                <td><code>MORE</code></td>
+                <td>Setpoint raised beyond design</td>
+                <td>Operator error, HMI display fault</td>
+                <td><span class="hl">Attacker modifies setpoint via DCS access</span></td>
+                <td>Vessel operates above safe limit → PSV lift → loss of containment risk</td>
+                <td><span class="badge badge-coral">Critical</span></td>
+              </tr>
+              <tr>
+                <td><strong>Interlock signal</strong></td>
+                <td><code>NO</code></td>
+                <td>Interlock does not actuate when required</td>
+                <td>SIS failure, logic fault</td>
+                <td><span class="hl">Attacker disables interlock via SIS access</span></td>
+                <td>Protective shutdown does not occur → major incident potential</td>
+                <td><span class="badge badge-coral">Catastrophic</span></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+
+          <div class="callout callout-teal" style="margin-top:12px">
+            <span class="callout-icon">💡</span>
+            <div class="callout-text"><strong>What HAZOP tells you that the IEC 62443 matrix doesn't:</strong> The physical mechanism by which a cyber attack causes harm. Without HAZOP, you know the historian is a HIGH risk — but you don't know the specific overpressure pathway that makes it consequential. HAZOP provides that physical consequence chain, which then feeds more accurate consequence scores into the IEC 62443 matrix.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- METHOD 3: STRIDE -->
+    <div class="section">
+      <h2 class="section-title">Method 3 · STRIDE Threat Modelling</h2>
+      <p class="section-intro">STRIDE (Spoofing · Tampering · Repudiation · Information Disclosure · Denial of Service · Elevation of Privilege) systematically enumerates adversarial threats against software-intensive systems and APIs.</p>
+
+      <div class="card-grid">
+        <div class="card card-blue">
+          <div class="card-title">✅ Where it excels in OT</div>
+          <div class="card-body">Outstanding for software-intensive systems — TOS, SCADA, historians, AGV navigation, APIs. Specifically designed for adversarial threat identification. Captures V2X communication threats. Handles IT/OT boundary and supply chain threats systematically.</div>
+        </div>
+        <div class="card card-coral">
+          <div class="card-title">⚠️ Where it falls short</div>
+          <div class="card-body">Produces a massive list of threats without inherent prioritisation — you can generate 200+ STRIDE findings for a large system with no sense of which matter. Does not quantify risk. Does not address physical consequence chains.</div>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Worked Example</span>
+          <span class="example-title">STRIDE applied to an IGV navigation system at a port terminal</span>
+        </div>
+        <div class="example-body">
+          <table class="tbl">
+            <thead>
+              <tr><th style="width:100px">STRIDE Threat</th><th>Applied to IGV Navigation</th><th>Attack Example</th><th>OT Consequence</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-coral">Spoofing</span></td>
+                <td>Attacker impersonates the infrastructure positioning server</td>
+                <td>Fake V2X beacon broadcasts incorrect lane positions</td>
+                <td>IGV routes into a pedestrian area or collides with another vehicle</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-amber">Tampering</span></td>
+                <td>LiDAR point cloud data modified in transit</td>
+                <td>Man-in-the-middle on the IGV ↔ infrastructure communication link injects false obstacle data</td>
+                <td>IGV stops unnecessarily (DoS) or ignores real obstacle (collision)</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-gray">Repudiation</span></td>
+                <td>Vehicle activity logs can be altered</td>
+                <td>Attacker clears movement logs after an incident</td>
+                <td>Forensic investigation cannot reconstruct the incident — liability and root cause gaps</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-blue">Info Disclosure</span></td>
+                <td>Real-time position of all vehicles is broadcast</td>
+                <td>Competitor or criminal intelligence gathers vehicle positions and cargo locations</td>
+                <td>Cargo theft, competitive intelligence, insider threat enablement</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-coral">Denial of Service</span></td>
+                <td>Fleet management server flooded with requests</td>
+                <td>Attacker saturates the Wi-Fi infrastructure with forged beacon responses</td>
+                <td>All IGVs stop — terminal operations halt — ship is missed</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-purple">Elevation of Privilege</span></td>
+                <td>Vendor remote access account used beyond its scope</td>
+                <td>Compromised vendor account escalated from diagnostic to control privileges</td>
+                <td>Attacker can now command individual vehicles directly, bypassing fleet management</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout callout-amber" style="margin-top:4px">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-text"><strong>STRIDE alone is not enough:</strong> These 6 findings are just for one component (the navigation interface). A full STRIDE of the entire port terminal might produce 150+ findings. Without risk scoring (from the IEC 62443 matrix), you cannot tell your client whether to fix the Spoofing issue or the DoS issue first. STRIDE provides the input — the IEC 62443 matrix provides the prioritisation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- METHOD 4: Bow-Tie -->
+    <div class="section">
+      <h2 class="section-title">Method 4 · Bow-Tie Analysis</h2>
+      <p class="section-intro">Bow-Tie maps threats (left side) through a top event to consequences (right side), explicitly showing prevention barriers (left) and recovery/mitigation barriers (right). It bridges the cyber and physical safety worlds in a single visual.</p>
+
+      <div class="card-grid">
+        <div class="card card-purple">
+          <div class="card-title">✅ Where it excels in OT</div>
+          <div class="card-body">Visually compelling for executives and safety teams. Shows exactly where barriers exist AND where gaps are. Integrates cyber controls with physical safety barriers on a single diagram. The single most effective communication tool for cross-domain cyber-physical risk.</div>
+        </div>
+        <div class="card card-coral">
+          <div class="card-title">⚠️ Where it falls short</div>
+          <div class="card-body">Not a threat identification method — needs HAZOP or STRIDE input to identify the scenarios. Does not scale to full-system enumeration. Resource-intensive to produce properly. Does not produce SL-T outputs alone.</div>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Worked Example</span>
+          <span class="example-title">Bow-Tie: "Cyber-induced overpressure in Unit 3 process vessel"</span>
+        </div>
+        <div class="example-body">
+          <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin-bottom:16px">
+            <!-- Left threats -->
+            <div>
+              <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--textSm);text-transform:uppercase;margin-bottom:10px;padding-left:4px">Threat sources</div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="background:rgba(239,83,80,.12);border:1px solid rgba(239,83,80,.2);border-radius:8px;padding:8px 12px;font-size:12.5px;color:#ff7675">External attacker via DMZ</div>
+                <div style="background:rgba(239,83,80,.12);border:1px solid rgba(239,83,80,.2);border-radius:8px;padding:8px 12px;font-size:12.5px;color:#ff7675">Malicious insider — engineer</div>
+                <div style="background:rgba(239,83,80,.12);border:1px solid rgba(239,83,80,.2);border-radius:8px;padding:8px 12px;font-size:12.5px;color:#ff7675">Compromised vendor remote access</div>
+              </div>
+              <div style="margin-top:16px">
+                <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--textSm);text-transform:uppercase;margin-bottom:8px;padding-left:4px">Prevention barriers</div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <div style="background:rgba(76,175,130,.1);border:1px solid rgba(76,175,130,.2);border-radius:6px;padding:6px 10px;font-size:12px;color:var(--sage)">✓ DMZ firewall + IDS</div>
+                  <div style="background:rgba(76,175,130,.1);border:1px solid rgba(76,175,130,.2);border-radius:6px;padding:6px 10px;font-size:12px;color:var(--sage)">✓ Multi-factor auth on DCS</div>
+                  <div style="background:rgba(255,179,0,.1);border:1px solid rgba(255,179,0,.2);border-radius:6px;padding:6px 10px;font-size:12px;color:var(--amber)">⚠ Change management (partial)</div>
+                  <div style="background:rgba(239,83,80,.1);border:1px solid rgba(239,83,80,.2);border-radius:6px;padding:6px 10px;font-size:12px;color:#ff7675">✗ Vendor access monitoring (MISSING)</div>
+                </div>
+              </div>
+            </div>
+            <!-- Centre event -->
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px">
+              <div style="width:1px;flex:1;background:var(--border)"></div>
+              <div style="background:rgba(239,83,80,.2);border:2px solid rgba(239,83,80,.4);border-radius:12px;padding:12px 16px;text-align:center;margin:8px 0">
+                <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--textSm);text-transform:uppercase;margin-bottom:4px">Top event</div>
+                <div style="font-size:12.5px;font-weight:500;color:#ff7675">DCS setpoint<br>manipulation</div>
+              </div>
+              <div style="width:1px;flex:1;background:var(--border)"></div>
+            </div>
+            <!-- Right consequences -->
+            <div>
+              <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--textSm);text-transform:uppercase;margin-bottom:10px;padding-left:4px">Consequences</div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="background:rgba(239,83,80,.12);border:1px solid rgba(239,83,80,.2);border-radius:8px;padding:8px 12px;font-size:12.5px;color:#ff7675">Vessel overpressure → PSV lift</div>
+                <div style="background:rgba(239,83,80,.12);border:1px solid rgba(239,83,80,.2);border-radius:8px;padding:8px 12px;font-size:12.5px;color:#ff7675">Loss of containment → fire/explosion</div>
+                <div style="background:rgba(239,83,80,.12);border:1px solid rgba(239,83,80,.2);border-radius:8px;padding:8px 12px;font-size:12.5px;color:#ff7675">Personnel injury / fatality</div>
+              </div>
+              <div style="margin-top:16px">
+                <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--textSm);text-transform:uppercase;margin-bottom:8px;padding-left:4px">Recovery barriers</div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <div style="background:rgba(76,175,130,.1);border:1px solid rgba(76,175,130,.2);border-radius:6px;padding:6px 10px;font-size:12px;color:var(--sage)">✓ SIS / ESD interlock (independent)</div>
+                  <div style="background:rgba(76,175,130,.1);border:1px solid rgba(76,175,130,.2);border-radius:6px;padding:6px 10px;font-size:12px;color:var(--sage)">✓ Pressure Safety Valve</div>
+                  <div style="background:rgba(76,175,130,.1);border:1px solid rgba(76,175,130,.2);border-radius:6px;padding:6px 10px;font-size:12px;color:var(--sage)">✓ Alarm response procedure</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="callout callout-teal" style="margin-top:4px">
+            <span class="callout-icon">💡</span>
+            <div class="callout-text"><strong>What this tells the board:</strong> We have three prevention barriers but one is missing (vendor access monitoring). We have three recovery barriers that are all in place. The gap is on the prevention side. Priority action: implement vendor remote access monitoring before the next scheduled vendor outage in 6 weeks.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- METHOD 5: NIST -->
+    <div class="section">
+      <h2 class="section-title">Method 5 · NIST SP 800-30 / 800-82</h2>
+      <p class="section-intro">NIST SP 800-30 is the IT risk assessment guide. SP 800-82 adapts it specifically for ICS environments. For IT professionals moving into OT security, this is often the most familiar framework — but it is not the best fit as a primary OT methodology.</p>
+
+      <div class="card-grid">
+        <div class="card card-blue">
+          <div class="card-title">✅ Where it adds value</div>
+          <div class="card-body">Best for organisations with existing NIST CSF/RMF programmes extending into OT. Connects IT and OT risk registers in a common language. SP 800-82 Guide to ICS Security provides OT-specific guidance. Useful for SCADA/historian systems at the IT/OT boundary.</div>
+        </div>
+        <div class="card card-coral">
+          <div class="card-title">⚠️ Why it is not OT-primary</div>
+          <div class="card-body">Produces no SL-T output — a gap against IEC 62443-2-1 requirements for CSMS. Weaker on physical and safety consequence analysis. Less accepted by process safety engineers who implement the controls. Requires significant adaptation for real-time OT constraints.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-amber">
+        <span class="callout-icon">🎯</span>
+        <div class="callout-text"><strong>When to use NIST 800-30/82:</strong> Use it as a <em>bridging methodology</em> when your client already has an IT risk programme using NIST and wants to extend it to OT — for example, a manufacturing company with a NIST CSF implementation that needs to bring OT into the scope. Use it alongside IEC 62443 risk matrix, not instead of it. The IEC 62443 matrix provides the SL-T output that NIST cannot.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn nav-btn-prev" onclick="showStage(1)">← OT vs IT Fundamentals</button>
+    <button class="nav-btn nav-btn-next" onclick="showStage(3)">The Decision Matrix →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- STAGE 3 — THE DECISION MATRIX                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="stage-panel" id="stage3">
+  <div class="page-hero">
+    <div class="stage-eyebrow"><div class="stage-eyebrow-dot"></div>Stage 3 · Decision Tool</div>
+    <h1 class="page-title">The <em>interactive decision matrix</em><br>— choose the right method</h1>
+    <p class="page-subtitle">Select what you are assessing and the matrix instantly ranks the methodologies, highlights the primary recommendation, and explains why. Use this tool in your CSMS-RA-001 documentation to justify your methodology selection.</p>
+    <div class="hero-meta">
+      <div class="hero-badge">⏱ 30 min</div>
+      <div class="hero-badge">📍 §4.2.3.1 SHALL — Justify your selection</div>
+      <div class="hero-badge">🔧 Interactive tool</div>
+    </div>
+  </div>
+
+  <div class="content-body">
+
+    <div class="section">
+      <h2 class="section-title">How to use this matrix</h2>
+      <p class="section-intro">This matrix operationalises the hybrid methodology principle. Select the system type you are assessing. The matrix scores each methodology against 8 criteria specific to that system type, highlights the recommended primary and supporting methods, and explains the rationale — which you can use directly in your CSMS-RA-001 documentation.</p>
+
+      <div class="callout callout-teal">
+        <span class="callout-icon">📋</span>
+        <div class="callout-text"><strong>For CSMS-RA-001 (Methodology Selection Record):</strong> IEC 62443-2-1 §4.2.3.1 (SHALL) requires you to select and document a methodology with a rationale. This matrix provides that rationale — copy the explanation text from the result into Section 4 of your CSMS-RA-001 template.</div>
+      </div>
+
+      <div class="dm-filters" id="dmFilters"></div>
+      <div id="dmResult"></div>
+      <div class="dm-grid" id="dmGrid"></div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">The scoring framework explained</h2>
+      <p class="section-intro">Understanding how the matrix scores methodologies helps you adapt it for systems not in the list, and defend your selection to auditors and regulators.</p>
+
+      <table class="tbl">
+        <thead>
+          <tr><th>Scoring Dimension</th><th>What it measures</th><th>Why it matters for OT</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cyber threat coverage</strong></td>
+            <td>Does the methodology identify adversarial attack paths and threat actors?</td>
+            <td>OT threat actors (nation-state, insider, vendor) have specific TTPs that generic risk methods miss</td>
+          </tr>
+          <tr>
+            <td><strong>Physical consequence</strong></td>
+            <td>Does the methodology capture safety and environmental consequences?</td>
+            <td>In OT, the primary consequence of cyber attack is physical — not information loss</td>
+          </tr>
+          <tr>
+            <td><strong>Software depth</strong></td>
+            <td>How well does it analyse software-intensive systems and APIs?</td>
+            <td>TOS, SCADA, AGV navigation are software-driven — need software-specific threat modelling</td>
+          </tr>
+          <tr>
+            <td><strong>Network/zone fit</strong></td>
+            <td>Does it address network architecture and zone boundaries?</td>
+            <td>Zone and conduit design is a primary IACS security control — the method must address it</td>
+          </tr>
+          <tr>
+            <td><strong>SL-T output</strong></td>
+            <td>Does it produce Target Security Level outputs?</td>
+            <td>IEC 62443-2-1 CSMS requires SL-T to drive countermeasure selection — mandatory for compliance</td>
+          </tr>
+          <tr>
+            <td><strong>Communication value</strong></td>
+            <td>How well does the output communicate risk to non-technical audiences?</td>
+            <td>Operations, HSE, and management stakeholders must understand risk to act on it</td>
+          </tr>
+          <tr>
+            <td><strong>Scalability</strong></td>
+            <td>Can it cover a full IACS inventory efficiently?</td>
+            <td>A large terminal or plant may have 50+ systems — the method must be scalable</td>
+          </tr>
+          <tr>
+            <td><strong>Safety integration</strong></td>
+            <td>Does it integrate with existing process safety frameworks (IEC 61511, HAZOP)?</td>
+            <td>OT security must not conflict with or duplicate the safety management system</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Recommended combinations by industry</h2>
+      <p class="section-intro">In practice, OT risk assessment always uses a hybrid approach. Here are the proven combinations for major IACS industries, with the justification that would appear in a CSMS-RA-001 methodology selection record.</p>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Port / Logistics Terminal</span>
+          <span class="example-title">DP World-type automated terminal: RTG, IGV/AGV, ASC, TOS</span>
+        </div>
+        <div class="example-body">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+            <span class="badge badge-teal">Primary: IEC 62443 Risk Matrix</span>
+            <span class="badge badge-blue">Supporting: STRIDE (TOS + IGV nav)</span>
+            <span class="badge badge-amber">Supporting: HAZOP (RTG/ASC machinery)</span>
+            <span class="badge badge-gray">Validate: Bow-Tie (key scenarios)</span>
+          </div>
+          <p style="color:var(--textMd);font-size:13.5px;line-height:1.65"><strong style="color:#fff">Rationale:</strong> The terminal presents three distinct risk environments. The TOS and IGV navigation software require STRIDE to enumerate adversarial attack paths against APIs, V2X communications, and positioning data. The RTG and ASC electromechanical systems require HAZOP to establish the physical consequence chain that a cyber incident would initiate. The IEC 62443 risk matrix integrates both inputs to produce SL-T per zone. Bow-Tie analysis is applied to the three highest-consequence scenarios for executive and HSE communication.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Oil, Gas & Refining</span>
+          <span class="example-title">Refinery/chemical plant: DCS, SIS, SCADA, PLC</span>
+        </div>
+        <div class="example-body">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+            <span class="badge badge-teal">Primary: IEC 62443 Risk Matrix</span>
+            <span class="badge badge-amber">Supporting: HAZOP/LOPA (SIS layer)</span>
+            <span class="badge badge-gray">Validate: Bow-Tie (loss of containment scenarios)</span>
+          </div>
+          <p style="color:var(--textMd);font-size:13.5px;line-height:1.65"><strong style="color:#fff">Rationale:</strong> Process facilities have mature HAZOP programmes — the cyber risk assessment must integrate with, not duplicate, the existing safety case. HAZOP establishes the physical consequence mechanism for each cyber deviation. LOPA validates that the combination of cyber controls and safety instrumented functions provides sufficient risk reduction. IEC 62443 matrix provides the zone-level SL-T determination. The Triconex SIS requires LOPA specifically because IEC 61511 functional safety requirements mandate it.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Water & Wastewater</span>
+          <span class="example-title">Treatment and distribution: SCADA, PLC dosing, pumping stations</span>
+        </div>
+        <div class="example-body">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+            <span class="badge badge-teal">Primary: IEC 62443 Risk Matrix</span>
+            <span class="badge badge-amber">Supporting: HAZOP (chemical dosing systems)</span>
+            <span class="badge badge-gray">Validate: Bow-Tie (contamination scenarios)</span>
+          </div>
+          <p style="color:var(--textMd);font-size:13.5px;line-height:1.65"><strong style="color:#fff">Rationale:</strong> Water facilities present a public health risk that elevates the consequence dimension significantly. Chemical dosing system manipulation (chlorine over/under-dosing) is the primary concern — HAZOP is used to establish the specific public health consequence chain. IEC 62443 matrix provides zone SL-T. STRIDE is not primary here as the systems are largely not software-intensive, but should be applied to the SCADA system and any internet-facing remote access points.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn nav-btn-prev" onclick="showStage(2)">← The 5 Methodologies</button>
+    <button class="nav-btn nav-btn-next" onclick="showStage(4)">Worked Examples →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- STAGE 4 — WORKED EXAMPLES                         -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="stage-panel" id="stage4">
+  <div class="page-hero">
+    <div class="stage-eyebrow"><div class="stage-eyebrow-dot"></div>Stage 4 · Application</div>
+    <h1 class="page-title">Putting it all together —<br><em>two complete assessments</em></h1>
+    <p class="page-subtitle">End-to-end risk assessments on real IACS scenarios. Watch the complete methodology selection, risk scoring, and countermeasure derivation process from start to finish. These outputs map directly to CSMS-RA-001 through CSMS-RA-008.</p>
+    <div class="hero-meta">
+      <div class="hero-badge">⏱ 60 min</div>
+      <div class="hero-badge">📍 §4.2.3.1 through §4.2.3.9</div>
+      <div class="hero-badge">🏭 Two complete scenarios</div>
+    </div>
+  </div>
+
+  <div class="content-body">
+
+    <!-- SCENARIO 1 -->
+    <div class="section">
+      <h2 class="section-title">Scenario 1 · The DCS with a LAN-connected SIS</h2>
+      <p class="section-intro">Sunrise Refinery. Unit 3 Triconex SIS is discovered to be reachable from the corporate network. An IT risk professional has been asked to assess the risk. Walk through the complete hybrid methodology approach.</p>
+
+      <div class="callout callout-coral">
+        <span class="callout-icon">🚨</span>
+        <div class="callout-text"><strong>The discovery:</strong> During network mapping (CSMS-RA-003), the OT Security Lead finds that the Unit 3 Triconex Safety Instrumented System (SIS) — which controls the emergency shutdown for Unit 3 — has an Ethernet port connected to the same VLAN as the corporate ERP system. There is no firewall between them. Anyone on the corporate network can reach the SIS.</div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Step 1 — CSMS-RA-001</span>
+          <span class="example-title">Methodology selection decision</span>
+        </div>
+        <div class="example-body">
+          <p style="color:var(--textMd);font-size:13.5px;margin-bottom:14px">For this system (SIS), the decision matrix recommends:</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+            <span class="badge badge-teal">Primary: IEC 62443 Risk Matrix</span>
+            <span class="badge badge-amber">Supporting: HAZOP (safety consequence)</span>
+            <span class="badge badge-gray">Validate: Bow-Tie (ESD defeat scenario)</span>
+          </div>
+          <p style="color:var(--textMd);font-size:13.5px"><strong style="color:#fff">Justification recorded in CSMS-RA-001:</strong> The Triconex SIS is a safety-critical system (IEC 61511 SIL 2) whose primary risk is safety consequence. HAZOP is used to identify the physical mechanism of harm for each cyber deviation scenario. The IEC 62443 risk matrix is the primary scoring tool producing SL-T for the SIS zone. Bow-Tie is applied to the ESD defeat scenario for board and regulator communication.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Step 2 — CSMS-RA-005 (High-Level)</span>
+          <span class="example-title">HAZOP-informed consequence identification</span>
+        </div>
+        <div class="example-body">
+          <p style="color:var(--textMd);font-size:13.5px;margin-bottom:14px">Apply HAZOP guide words to the SIS <em>to establish what a cyber attacker could cause physically</em>:</p>
+          <table class="tbl">
+            <thead><tr><th>Cyber attack vector</th><th>HAZOP deviation</th><th>Physical consequence</th><th>HSE rating</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Attacker disables ESD from corporate network</strong></td>
+                <td>NO interlock signal when high pressure reached</td>
+                <td>Protective shutdown does not occur → vessel continues to overpressure → potential explosion/BLEVE</td>
+                <td><span class="badge badge-coral">Catastrophic</span></td>
+              </tr>
+              <tr>
+                <td><strong>Attacker triggers false ESD during normal operation</strong></td>
+                <td>Spurious shutdown when process is stable</td>
+                <td>Unexpected shutdown of Unit 3 → uncontrolled cool-down → product solidification in lines → days to restart</td>
+                <td><span class="badge badge-amber">Critical</span></td>
+              </tr>
+              <tr>
+                <td><strong>Attacker alters SIS cause-and-effect matrix</strong></td>
+                <td>Wrong equipment responds to detected hazard</td>
+                <td>Wrong valve closes → upstream overpressure builds while SIS believes it is protected → hidden hazard</td>
+                <td><span class="badge badge-coral">Catastrophic</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Step 3 — CSMS-RA-007</span>
+          <span class="example-title">IEC 62443 risk matrix scoring</span>
+        </div>
+        <div class="example-body">
+          <div class="risk-matrix">
+            <div class="matrix-cell matrix-header"></div>
+            <div class="matrix-cell matrix-header">Negligible (1)</div>
+            <div class="matrix-cell matrix-header">Marginal (2)</div>
+            <div class="matrix-cell matrix-header">Critical (3)</div>
+            <div class="matrix-cell matrix-header">Catastrophic (4)</div>
+            <div class="matrix-cell matrix-row-label">High (4)</div>
+            <div class="matrix-cell matrix-high">HIGH 4</div>
+            <div class="matrix-cell matrix-high">HIGH 8</div>
+            <div class="matrix-cell matrix-crit">CRIT 12</div>
+            <div class="matrix-cell matrix-crit">CRIT 16</div>
+            <div class="matrix-cell matrix-row-label">Medium (3)</div>
+            <div class="matrix-cell matrix-low">LOW 3</div>
+            <div class="matrix-cell matrix-med">MED 6</div>
+            <div class="matrix-cell matrix-high">HIGH 9</div>
+            <div class="matrix-cell matrix-crit">CRIT 12</div>
+            <div class="matrix-cell matrix-row-label">Low (2)</div>
+            <div class="matrix-cell matrix-low">LOW 2</div>
+            <div class="matrix-cell matrix-low">LOW 4</div>
+            <div class="matrix-cell matrix-med">MED 6</div>
+            <div class="matrix-cell matrix-high">HIGH 8</div>
+            <div class="matrix-cell matrix-row-label">Remote (1)</div>
+            <div class="matrix-cell matrix-low">LOW 1</div>
+            <div class="matrix-cell matrix-low">LOW 2</div>
+            <div class="matrix-cell matrix-low">LOW 3</div>
+            <div class="matrix-cell matrix-med">MED 4</div>
+          </div>
+
+          <table class="tbl" style="margin-top:8px">
+            <thead><tr><th>Risk ID</th><th>Risk Scenario</th><th>Likelihood</th><th>Consequence</th><th>Score</th><th>Rating</th><th>SL-T</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>R-SIS-001</code></td>
+                <td>External attacker disables ESD via corporate LAN access to SIS</td>
+                <td>High (4) — exposed, no auth</td>
+                <td>Catastrophic (4)</td>
+                <td><strong style="color:#ff4444">16</strong></td>
+                <td><span class="badge badge-coral">CRITICAL</span></td>
+                <td><span class="badge badge-teal">SL-T 3</span></td>
+              </tr>
+              <tr>
+                <td><code>R-SIS-002</code></td>
+                <td>Insider triggers false ESD via legitimate access to SIS workstation</td>
+                <td>Medium (3)</td>
+                <td>Critical (3)</td>
+                <td><strong style="color:#ff7675">9</strong></td>
+                <td><span class="badge badge-coral">HIGH</span></td>
+                <td><span class="badge badge-teal">SL-T 2</span></td>
+              </tr>
+              <tr>
+                <td><code>R-SIS-003</code></td>
+                <td>Vendor remote access session used to alter cause-and-effect matrix</td>
+                <td>Medium (3)</td>
+                <td>Catastrophic (4)</td>
+                <td><strong style="color:#ff4444">12</strong></td>
+                <td><span class="badge badge-coral">CRITICAL</span></td>
+                <td><span class="badge badge-teal">SL-T 3</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Step 4 — Countermeasures</span>
+          <span class="example-title">SL-T 3 drives the required controls</span>
+        </div>
+        <div class="example-body">
+          <div class="card-grid">
+            <div>
+              <p style="color:var(--textMd);font-size:13px;margin-bottom:10px"><strong style="color:var(--coral)">Immediate (within 24 hours):</strong></p>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--teal)">→</span> Physical isolation: disconnect SIS Ethernet from corporate VLAN immediately</div>
+                <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--teal)">→</span> Establish temporary monitoring: log all access attempts to SIS subnet</div>
+                <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--teal)">→</span> Audit all vendor accounts: suspend any with SIS access immediately</div>
+              </div>
+            </div>
+            <div>
+              <p style="color:var(--textMd);font-size:13px;margin-bottom:10px"><strong style="color:var(--amber)">Within 30 days (CRITICAL risk):</strong></p>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--teal)">→</span> SIS zone: deploy dedicated unidirectional gateway or data diode</div>
+                <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--teal)">→</span> Implement multi-factor authentication for all SIS access</div>
+                <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--teal)">→</span> Vendor access: supervised only, time-limited sessions, logged</div>
+                <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span style="color:var(--teal)">→</span> SIS configuration: integrity verification baseline established</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENARIO 2: IGV -->
+    <div class="section">
+      <h2 class="section-title">Scenario 2 · IGV Navigation at an Automated Port</h2>
+      <p class="section-intro">A DP World-type terminal. Intelligent Guided Vehicles (IGVs) navigate the yard using GPS positioning and V2X communication with fixed infrastructure beacons. The fleet management server is connected to the TOS via an API. Assess the cyber risk.</p>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Step 1 — Methodology Selection</span>
+          <span class="example-title">Decision matrix output: software-intensive autonomous system</span>
+        </div>
+        <div class="example-body">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+            <span class="badge badge-blue">Primary: STRIDE (V2X + fleet management API)</span>
+            <span class="badge badge-teal">Supporting: IEC 62443 Risk Matrix (zone scoring)</span>
+            <span class="badge badge-gray">Validate: Bow-Tie (IGV collision scenario)</span>
+          </div>
+          <p style="color:var(--textMd);font-size:13.5px"><strong style="color:#fff">Why STRIDE is primary here:</strong> Unlike the SIS (where physical consequence is the primary concern), the IGV system's main risks are adversarial attacks against software — GPS spoofing, V2X message tampering, fleet management API exploitation. STRIDE systematically enumerates these. The IEC 62443 matrix then scores the findings. If HAZOP were applied here, it would generate meaningful findings for the physical vehicle motion controls but would miss the entire V2X attack surface.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Step 2 — STRIDE Analysis</span>
+          <span class="example-title">Threat enumeration on the V2X communication channel</span>
+        </div>
+        <div class="example-body">
+          <p style="color:var(--textMd);font-size:13.5px;margin-bottom:14px">STRIDE is applied to the <strong style="color:#fff">V2X positioning beacon → IGV navigation processor</strong> data flow:</p>
+          <table class="tbl">
+            <thead><tr><th>Threat</th><th>Attack scenario</th><th>Exploited weakness</th><th>Consequence</th><th>Risk input for matrix</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-coral">Spoofing</span></td>
+                <td>Attacker deploys a rogue V2X beacon broadcasting false position data</td>
+                <td>No authentication on V2X beacon messages</td>
+                <td>IGV routes into pedestrian area or off dock edge</td>
+                <td>L=3, C=4 → <strong>CRITICAL</strong></td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-amber">Tampering</span></td>
+                <td>MITM on Wi-Fi link injects false "obstacle clear" signal</td>
+                <td>Unencrypted V2X channel, no message integrity</td>
+                <td>IGV ignores real obstacle — collision with another vehicle or worker</td>
+                <td>L=2, C=4 → <strong>HIGH</strong></td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-coral">DoS</span></td>
+                <td>Wi-Fi deauthentication attack floods all IGV beacons</td>
+                <td>Standard Wi-Fi protocol vulnerability</td>
+                <td>All IGVs emergency-stop — terminal operations halt</td>
+                <td>L=4, C=3 → <strong>CRITICAL</strong></td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-purple">Elevation of Privilege</span></td>
+                <td>Compromised TOS vendor account accessed fleet management API with admin rights</td>
+                <td>Default API credentials, no role separation</td>
+                <td>Attacker commands individual vehicles directly — bypasses all safety zones</td>
+                <td>L=3, C=4 → <strong>CRITICAL</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="example-header">
+          <span class="example-tag">Step 3 — IEC 62443 Scoring</span>
+          <span class="example-title">Risk register output for IGV zone</span>
+        </div>
+        <div class="example-body">
+          <table class="tbl">
+            <thead><tr><th>Risk ID</th><th>From STRIDE finding</th><th>L</th><th>C</th><th>Score</th><th>Rating</th><th>SL-T Zone</th></tr></thead>
+            <tbody>
+              <tr><td><code>R-IGV-001</code></td><td>Rogue V2X beacon — position spoofing</td><td>3</td><td>4</td><td><strong style="color:#ff4444">12</strong></td><td><span class="badge badge-coral">CRITICAL</span></td><td><span class="badge badge-teal">SL-T 3</span></td></tr>
+              <tr><td><code>R-IGV-002</code></td><td>MITM on V2X — obstacle data tampered</td><td>2</td><td>4</td><td><strong style="color:#ff7675">8</strong></td><td><span class="badge badge-coral">HIGH</span></td><td><span class="badge badge-teal">SL-T 2</span></td></tr>
+              <tr><td><code>R-IGV-003</code></td><td>Wi-Fi deauth DoS — all IGVs stop</td><td>4</td><td>3</td><td><strong style="color:#ff4444">12</strong></td><td><span class="badge badge-coral">CRITICAL</span></td><td><span class="badge badge-teal">SL-T 3</span></td></tr>
+              <tr><td><code>R-IGV-004</code></td><td>Fleet management API elevation of privilege</td><td>3</td><td>4</td><td><strong style="color:#ff4444">12</strong></td><td><span class="badge badge-coral">CRITICAL</span></td><td><span class="badge badge-teal">SL-T 3</span></td></tr>
+            </tbody>
+          </table>
+          <div class="callout callout-teal" style="margin-top:4px">
+            <span class="callout-icon">💡</span>
+            <div class="callout-text"><strong>Key output:</strong> Three CRITICAL risks in the IGV zone drive an SL-T 3 requirement. This means the countermeasures must provide protection against intentional violation using sophisticated means with moderate resources — a significantly higher standard than the default SL-T 1 most port operators currently implement for vehicle networks.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn nav-btn-prev" onclick="showStage(3)">← Decision Matrix</button>
+    <button class="nav-btn nav-btn-next" onclick="showStage(5)">Mastery →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- STAGE 5 — MASTERY                                 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="stage-panel" id="stage5">
+  <div class="page-hero">
+    <div class="stage-eyebrow"><div class="stage-eyebrow-dot"></div>Stage 5 · Mastery</div>
+    <h1 class="page-title">From IT risk professional<br>to <em>OT assessment practitioner</em></h1>
+    <p class="page-subtitle">The transition from IT risk to OT risk assessment is not just a methodology change — it is a mindset shift. This stage consolidates that shift and gives you the framework to select, justify, and execute the right methodology for any IACS environment you encounter.</p>
+    <div class="hero-meta">
+      <div class="hero-badge">⏱ 30 min</div>
+      <div class="hero-badge">📍 Full synthesis</div>
+      <div class="hero-badge">🎓 Practitioner level</div>
+    </div>
+  </div>
+
+  <div class="content-body">
+
+    <div class="section">
+      <h2 class="section-title">The seven principles of OT risk assessment</h2>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">Start with physical consequence, not vulnerability</div>
+            <div class="step-body">In IT, you scan for vulnerabilities and assess their impact. In OT, you start by asking: what is the worst physical thing that can happen here? Then you work backwards to what cyber events could cause it. The Triconex SIS risk was CRITICAL not because the network exposure was high — but because the consequence was catastrophic. Consequence drives everything.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">Never apply a single methodology to an OT environment</div>
+            <div class="step-body">No single methodology captures all three OT risk domains (cyber, physical, operational). The IEC 62443 risk matrix is your spine — but it needs physical consequence input (HAZOP) for safety-critical systems, and adversarial threat input (STRIDE) for software-intensive systems. Always use at least two methods.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">The methodology must produce SL-T — everything else is supplementary</div>
+            <div class="step-body">Under IEC 62443-2-1, the CSMS requires Target Security Levels to drive countermeasure selection. HAZOP, STRIDE, and Bow-Tie are valuable — but they do not produce SL-T. The IEC 62443 risk matrix must always be part of the approach. Your CSMS-RA-001 must document how SL-T is derived.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">Security controls must not create safety hazards</div>
+            <div class="step-body">Every security control you recommend must be checked for HSE impact. Account lockout: does it lock operators out during emergencies? Encryption: does it add latency that breaks real-time control loops? Patch application: does the reboot create a production hazard? This is the §4.2.3.11 integration requirement — and it is never optional.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">Follow the Annex B sequence — always</div>
+            <div class="step-body">High-level risk assessment before detailed vulnerability assessment. Business rationale before any technical work. The sequence is defined in Annex B for a reason: detailed technical findings presented without a risk narrative are ignored by management. You have seen this happen in IT — it is worse in OT where the audience is operations engineers, not CISOs.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">Document the methodology selection formally (CSMS-RA-001)</div>
+            <div class="step-body">§4.2.3.1 (SHALL) requires a documented methodology selection with justification. This is the document an auditor, regulator, or insurer will ask for first. The decision matrix in Stage 3 of this training generates the justification text. Use it. An undocumented methodology selection is a SHALL non-conformance.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <div class="step-label">The risk register is a living document — risk changes when the system changes</div>
+            <div class="step-body">§4.2.3.10 (SHALL) requires documented reassessment triggers. Every time a system changes — new firmware, new network connection, new vendor, new threat intelligence — the risk register must be reviewed. A risk register that is accurate on day one and never updated is not a CSMS — it is a compliance exercise.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Quick reference: Methodology selection at a glance</h2>
+
+      <table class="tbl">
+        <thead>
+          <tr><th>If you are assessing...</th><th>Lead with...</th><th>Add...</th><th>Validate with...</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Safety-critical system (SIS, ESD)</strong></td><td><span class="badge badge-teal">IEC 62443 Matrix</span></td><td><span class="badge badge-amber">HAZOP + LOPA</span></td><td><span class="badge badge-gray">Bow-Tie</span></td></tr>
+          <tr><td><strong>DCS / PLC (process control)</strong></td><td><span class="badge badge-teal">IEC 62443 Matrix</span></td><td><span class="badge badge-amber">HAZOP</span></td><td><span class="badge badge-gray">Bow-Tie for key scenarios</span></td></tr>
+          <tr><td><strong>SCADA / Historian</strong></td><td><span class="badge badge-teal">IEC 62443 Matrix</span></td><td><span class="badge badge-blue">STRIDE</span></td><td>—</td></tr>
+          <tr><td><strong>OT network / zones</strong></td><td><span class="badge badge-teal">IEC 62443 Matrix</span></td><td>—</td><td>—</td></tr>
+          <tr><td><strong>AGV / IGV / autonomous vehicles</strong></td><td><span class="badge badge-blue">STRIDE</span></td><td><span class="badge badge-teal">IEC 62443 Matrix</span></td><td><span class="badge badge-gray">Bow-Tie (collision scenario)</span></td></tr>
+          <tr><td><strong>TOS / software-intensive</strong></td><td><span class="badge badge-blue">STRIDE</span></td><td><span class="badge badge-teal">IEC 62443 Matrix</span></td><td>—</td></tr>
+          <tr><td><strong>Physical / HSE consequence</strong></td><td><span class="badge badge-amber">HAZOP</span></td><td><span class="badge badge-teal">IEC 62443 Matrix</span></td><td><span class="badge badge-gray">Bow-Tie</span></td></tr>
+          <tr><td><strong>Vendor / supply chain</strong></td><td><span class="badge badge-blue">STRIDE</span></td><td><span class="badge badge-teal">IEC 62443 Matrix</span></td><td><span class="badge badge-gray">Bow-Tie</span></td></tr>
+          <tr><td><strong>Management / executive communication</strong></td><td><span class="badge badge-gray">Bow-Tie</span></td><td><span class="badge badge-teal">IEC 62443 Matrix (scores)</span></td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Your CSMS-RA-001 checklist</h2>
+      <p class="section-intro">Before submitting your methodology selection record, confirm every item below. These are the questions an IEC 62443 auditor will ask.</p>
+
+      <div id="masterChecklist" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn nav-btn-prev" onclick="showStage(4)">← Worked Examples</button>
+    <button class="nav-btn nav-btn-next" onclick="showStage(6)">Knowledge Check →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- STAGE 6 — KNOWLEDGE CHECK                        -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="stage-panel" id="stage6">
+  <div class="page-hero">
+    <div class="stage-eyebrow"><div class="stage-eyebrow-dot"></div>Knowledge Check</div>
+    <h1 class="page-title"><em>Test your understanding</em><br>— 8 practitioner questions</h1>
+    <p class="page-subtitle">These questions reflect the decisions you will make in the field. There are no trick questions — only the practical application of methodology selection principles.</p>
+    <div class="hero-meta">
+      <div class="hero-badge">8 questions</div>
+      <div class="hero-badge">📍 All 5 stages covered</div>
+      <div class="hero-badge" id="scoreDisplay">Score: 0 / 8</div>
+    </div>
+  </div>
+
+  <div class="content-body">
+    <div id="allQuizzes"></div>
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn nav-btn-prev" onclick="showStage(5)">← Mastery</button>
+    <button class="nav-btn nav-btn-next" disabled style="opacity:.4">Course Complete ✓</button>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+const STAGES = 6;
+let currentStage = 1;
+let scores = {};
+
+// ── NAVIGATION ────────────────────────────────────────
+function showStage(n) {
+  document.querySelectorAll('.stage-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('stage' + n).classList.add('active');
+  document.getElementById('nav' + n).classList.add('active');
+  document.querySelector('.main').scrollTo({ top: 0, behavior: 'smooth' });
+  currentStage = n;
+  updateProgress(n);
+  if (n === 3) initDM();
+  if (n === 5) initChecklist();
+  if (n === 6) initAllQuizzes();
+}
+
+function updateProgress(n) {
+  const pct = Math.round(((n - 1) / (STAGES - 1)) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = 'Stage ' + n + ' of ' + (STAGES - 1);
+}
+
+// ── QUIZ ──────────────────────────────────────────────
+function selectOpt(el, qid, result) {
+  const q = document.getElementById(qid);
+  if (q.dataset.answered) return;
+  q.dataset.answered = '1';
+  q.querySelectorAll('.quiz-opt').forEach(o => {
+    if (o === el) o.classList.add(result === 'correct' ? 'correct' : 'wrong');
+    else if (result !== 'correct' && o.onclick.toString().includes("'correct'")) o.classList.add('correct');
+  });
+  const fb = document.getElementById(qid + '-fb');
+  if (fb) {
+    fb.classList.add('show', result === 'correct' ? 'correct' : 'wrong');
+    fb.textContent = FEEDBACK[qid] ? FEEDBACK[qid][result] : (result === 'correct' ? '✓ Correct.' : '✗ Not quite — see the correct answer highlighted above.');
+  }
+  if (result === 'correct') scores[qid] = 1;
+  updateScoreDisplay();
+}
+
+const FEEDBACK = {
+  'q1-1': {
+    correct: '✓ Correct. This is one of the most critical OT-specific risks. IEC 62443 §4.3.3.6 rationale explicitly warns: "Account lockout after failed attempts requires careful calibration — locking a valid user from a HMI during an incident has HSE implications."',
+    wrong: '✗ Incorrect. The primary danger is operational safety — an operator who cannot log in cannot respond to a process emergency. This is why OT access control design must always consider HSE consequences.'
+  },
+  'q1-2': {
+    correct: '✓ Correct. §4.2.3.1 (SHALL) states the organisation shall select a PARTICULAR methodology and document that selection. The standard does not mandate a specific methodology — it mandates that you choose one and justify it.',
+    wrong: '✗ Incorrect. IEC 62443-2-1 does not mandate a specific methodology — it requires you to select, document, and justify one. HAZOP is a valid choice for some systems but is not the only option.'
+  }
+};
+
+function updateScoreDisplay() {
+  const total = Object.keys(scores).length;
+  const el = document.getElementById('scoreDisplay');
+  if (el) el.textContent = 'Score: ' + total + ' / 8';
+}
+
+// ── CHECKLIST ─────────────────────────────────────────
+function initChecklist() {
+  const items = [
+    "Methodology selection is documented in CSMS-RA-001 with the rationale for selection",
+    "At least two methodologies are specified — primary + at least one supporting",
+    "The methodology produces SL-T outputs (or explicitly shows how SL-T is derived from the method's outputs)",
+    "Physical consequence analysis is included for any safety-critical system in scope",
+    "STRIDE analysis is included for any software-intensive or externally-connected system",
+    "The methodology selection has been endorsed by both the OT Security Lead and the HSE representative",
+    "A training record exists showing all assessment participants have been trained on the selected methodology (§4.2.3.2 SHOULD)",
+    "Reassessment triggers have been documented in CSMS-RA-009",
+    "The methodology review schedule has been established (maximum 3 years)"
+  ];
+  const el = document.getElementById('masterChecklist');
+  el.innerHTML = items.map((item, i) => `
+    <div onclick="toggleCheck(this)" style="display:flex;align-items:flex-start;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px 16px;cursor:pointer;transition:all .15s;font-size:13.5px;color:var(--textMd)">
+      <div style="width:18px;height:18px;border-radius:4px;border:1.5px solid var(--borderMd);flex-shrink:0;margin-top:1px;transition:all .15s;display:flex;align-items:center;justify-content:center;font-size:11px" class="chk-box"></div>
+      <span>${item}</span>
+    </div>`).join('');
+}
+
+function toggleCheck(el) {
+  const box = el.querySelector('.chk-box');
+  const checked = box.dataset.checked;
+  if (checked) {
+    delete box.dataset.checked;
+    box.textContent = '';
+    box.style.background = 'transparent';
+    box.style.borderColor = 'var(--borderMd)';
+    el.style.borderColor = 'var(--border)';
+    el.style.color = 'var(--textMd)';
+  } else {
+    box.dataset.checked = '1';
+    box.textContent = '✓';
+    box.style.background = 'var(--teal)';
+    box.style.borderColor = 'var(--teal)';
+    box.style.color = 'var(--navy)';
+    el.style.borderColor = 'rgba(0,191,165,.3)';
+    el.style.color = 'var(--text)';
+  }
+}
+
+// ── DECISION MATRIX ───────────────────────────────────
+const CONTEXTS = [
+  { id:"all", label:"All / Overview" },
+  { id:"sis", label:"Safety systems (SIS/ESD)" },
+  { id:"dcs", label:"DCS / PLC / RTU" },
+  { id:"scada", label:"SCADA / Historian" },
+  { id:"network", label:"OT network & zones" },
+  { id:"agv", label:"AGV / IGV / autonomous" },
+  { id:"tos", label:"TOS / software-intensive" },
+  { id:"physical", label:"Physical / HSE consequence" },
+  { id:"vendor", label:"Vendor / supply chain" },
+  { id:"mgmt", label:"Executive communication" },
+];
+
+const METHODS = [
+  { id:"iec62443", name:"IEC 62443 Risk Matrix", color:"#00BFA5",
+    scores:{sis:5,dcs:5,scada:5,network:5,agv:4,tos:4,physical:3,vendor:3,mgmt:4},
+    desc:{all:"The spine of every OT risk assessment. Produces SL-T outputs.",sis:"Best fit — produces SL-T 3 for high-consequence SIS zones.",dcs:"Best fit — zone model maps directly to DCS architecture.",scada:"Strong fit — handles IT/OT boundary risks well.",network:"Best fit — zone and conduit model is native.",agv:"Good fit — scores the identified STRIDE threats.",tos:"Good fit — handles external connectivity risks.",physical:"Useful for scoring but needs HAZOP for consequence detail.",vendor:"Useful for scoring vendor access zone risks.",mgmt:"Pair with Bow-Tie for executive communication."} },
+  { id:"hazop", name:"HAZOP / LOPA", color:"#FFB300",
+    scores:{sis:5,dcs:4,scada:2,network:1,agv:4,tos:1,physical:5,vendor:1,mgmt:2},
+    desc:{all:"Essential for physical consequence chains in process systems.",sis:"Required — IEC 61511 SIL verification demands HAZOP/LOPA.",dcs:"Strong fit — reveals what cyber deviation causes physically.",scada:"Weak fit — SCADA is software-intensive, not process.",network:"Not applicable — HAZOP is for process deviations.",agv:"Good fit — vehicle motion control physical consequences.",tos:"Not applicable — TOS is pure software.",physical:"Best fit — this is what HAZOP was built for.",vendor:"Not applicable.",mgmt:"Limited — Bow-Tie communicates better at executive level."} },
+  { id:"stride", name:"STRIDE Threat Modelling", color:"#2196F3",
+    scores:{sis:2,dcs:3,scada:5,network:4,agv:5,tos:5,physical:2,vendor:4,mgmt:2},
+    desc:{all:"Essential for software-intensive and externally-connected systems.",sis:"Limited — SIS threats are physical, not software-driven.",dcs:"Useful — PLC firmware threats captured, but HAZOP leads.",scada:"Best fit — SCADA APIs, external connectivity, historian.",network:"Good fit — identifies attack paths across zone boundaries.",agv:"Best fit — V2X, positioning APIs, fleet management.",tos:"Best fit — TOS is the most adversarial-threatened system.",physical:"Limited — STRIDE doesn't score physical consequence.",vendor:"Strong fit — vendor remote access threat vectors.",mgmt:"Limited — STRIDE lists are too technical for executives."} },
+  { id:"bowtie", name:"Bow-Tie Analysis", color:"#7C6BFF",
+    scores:{sis:4,dcs:3,scada:2,network:2,agv:4,tos:2,physical:5,vendor:2,mgmt:5},
+    desc:{all:"Best for communicating cross-domain risk to safety and executive audiences.",sis:"Strong — visualises ESD defeat scenario with barrier gaps.",dcs:"Useful for key process consequence scenarios.",scada:"Limited — Bow-Tie adds little to SCADA risk scoring.",network:"Limited — zone architecture is better shown in a diagram.",agv:"Strong — IGV collision scenario is ideal Bow-Tie material.",tos:"Limited — TOS threats are better shown in STRIDE diagrams.",physical:"Best fit — this is the primary use of Bow-Tie in OT.",vendor:"Limited value for vendor technical assessment.",mgmt:"Best fit — Bow-Tie was designed for executive communication."} },
+  { id:"nist", name:"NIST SP 800-30/82", color:"#4CAF82",
+    scores:{sis:2,dcs:3,scada:4,network:4,agv:2,tos:4,physical:2,vendor:4,mgmt:3},
+    desc:{all:"Best for bridging IT and OT risk programmes in NIST-aligned organisations.",sis:"Limited — no SL-T output, weak on safety consequence.",dcs:"Useful for organisations with existing NIST programmes.",scada:"Good fit — SP 800-82 specifically addresses SCADA.",network:"Good fit — network risk assessment is well covered.",agv:"Limited — not designed for autonomous vehicle threats.",tos:"Good fit — software risk assessment well covered.",physical:"Limited — safety consequence modelling is not NIST's strength.",vendor:"Good fit — supply chain risk is well addressed.",mgmt:"Useful if organisation uses NIST as common language."} },
+];
+
+let dmActive = "all";
+
+function initDM() {
+  const filters = document.getElementById('dmFilters');
+  if (filters.children.length) return;
+  filters.innerHTML = CONTEXTS.map(c =>
+    `<button class="dm-btn ${c.id==='all'?'active':''}" onclick="setDM('${c.id}')" data-ctx="${c.id}">${c.label}</button>`
+  ).join('');
+  renderDM();
+}
+
+function setDM(id) {
+  dmActive = id;
+  document.querySelectorAll('.dm-btn').forEach(b => b.classList.toggle('active', b.dataset.ctx === id));
+  renderDM();
+}
+
+function renderDM() {
+  const sorted = dmActive === 'all'
+    ? [...METHODS]
+    : [...METHODS].sort((a,b) => (b.scores[dmActive]||0) - (a.scores[dmActive]||0));
+
+  const result = document.getElementById('dmResult');
+  if (dmActive !== 'all') {
+    const top = sorted[0];
+    result.innerHTML = `<div class="result-banner"><h4>For "${CONTEXTS.find(c=>c.id===dmActive).label}" — recommended primary: ${top.name}</h4><p>${top.desc[dmActive]}</p></div>`;
+  } else {
+    result.innerHTML = `<div class="result-banner"><h4>Overview — select a system type to see ranked recommendations</h4><p>The matrix scores each methodology against 8 dimensions specific to the selected system type, highlighting the primary recommendation and explaining the rationale.</p></div>`;
+  }
+
+  const grid = document.getElementById('dmGrid');
+  grid.innerHTML = sorted.map((m, i) => {
+    const s = dmActive === 'all'
+      ? (Object.values(m.scores).reduce((a,b)=>a+b,0) / Object.values(m.scores).length)
+      : (m.scores[dmActive] || 0);
+    const isPrimary = dmActive !== 'all' && i === 0;
+    const isSupport = dmActive !== 'all' && i === 1;
+    const isDimmed  = dmActive !== 'all' && s < 2.5;
+    const badgeClass = isPrimary ? 'dm-badge-primary' : isSupport ? 'dm-badge-support' : 'dm-badge-limited';
+    const badgeLabel = isPrimary ? 'Primary' : isSupport ? 'Supporting' : 'Limited';
+    const pct = Math.round((s / 5) * 100);
+    const desc = m.desc[dmActive] || m.desc['all'];
+    return `<div class="dm-card ${isPrimary?'primary':''} ${isSupport?'supporting':''} ${isDimmed?'dimmed':''}">
+      <div class="dm-card-name">${m.name}</div>
+      <span class="dm-card-badge ${badgeClass}">${badgeLabel}</span>
+      <div class="dm-score-bar"><div class="dm-score-fill" style="width:${pct}%;background:${m.color}"></div></div>
+      <div class="dm-card-desc">${desc}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── KNOWLEDGE CHECK QUESTIONS ─────────────────────────
+const KCQuestions = [
+  { id:"kc1", q:"A water utility asks you to assess the cyber risk of their chlorine dosing PLC. Which methodology should lead the assessment, and why?",
+    opts:["STRIDE — because the PLC has external connectivity via a remote SCADA link","HAZOP — because manipulation of the dosing PLC can result in public health harm (over/under-dosing)","NIST SP 800-82 — because it was specifically written for ICS environments","ISO 27005 — because it is the international standard for information risk"],
+    correct:1, feedback:"✓ Correct. HAZOP leads because the primary risk is physical — contamination of public water supply. HAZOP reveals the specific consequence mechanism (what does 'more chlorine' do to the treated water?). IEC 62443 matrix then scores the risk using HAZOP's consequence output." },
+  { id:"kc2", q:"An IT risk analyst applies STRIDE to a Triconex SIS. She generates a comprehensive threat list but her risk scores seem lower than expected for a safety-critical system. What is the most likely reason?",
+    opts:["STRIDE is not designed for OT systems and should never be used","STRIDE identified the threats correctly but the consequence scoring needs HAZOP input to reflect the physical safety impact","The SIS is not connected to any network so STRIDE has nothing to analyse","STRIDE overestimates risk in OT environments"],
+    correct:1, feedback:"✓ Correct. STRIDE identifies threat types but does not quantify physical consequences. Without HAZOP input showing that 'ESD defeat → catastrophic process event', the consequence dimension is underscored. The combination of STRIDE (threat identification) + HAZOP (consequence quantification) + IEC 62443 matrix (risk scoring) is required." },
+  { id:"kc3", q:"Under IEC 62443-2-1 §4.2.3.1 (SHALL), what must the organisation document in CSMS-RA-001?",
+    opts:["The names of all personnel who conducted the assessment","The selected methodology AND the rationale for selecting it over alternatives","A complete penetration test report","The specific CVEs identified in the detailed vulnerability assessment"],
+    correct:1, feedback:"✓ Correct. §4.2.3.1 requires selection of a PARTICULAR methodology — and by implication, documentation of why it was chosen. CSMS-RA-001 requires you to show the alternatives evaluated and the specific reasons for selection." },
+  { id:"kc4", q:"A port terminal operator asks why you recommend STRIDE for the Terminal Operating System (TOS) but HAZOP for the RTG cranes. What is the correct explanation?",
+    opts:["STRIDE is always used for software and HAZOP for hardware — this is the rule","TOS is software-intensive with external API connectivity — STRIDE enumerates adversarial attack paths against software. RTGs are physical systems where cyber manipulation has direct safety consequences — HAZOP reveals what those consequences are physically.","HAZOP is more expensive, so it is reserved for the most critical systems only","STRIDE cannot be applied to physical systems at all"],
+    correct:1, feedback:"✓ Correct. The methodology must fit the system type. TOS threats are adversarial and software-focused (spoofing, API exploitation, data manipulation). RTG threats are physical — what does 'hoist speed more than design' cause when a cyber attacker manipulates the setpoint? Different systems, different risk domains, different methods." },
+  { id:"kc5", q:"You have completed STRIDE analysis on an IGV navigation system and identified 40 threats. Which is the correct next step?",
+    opts:["Present all 40 threats to management and ask them to prioritise","Apply the IEC 62443 risk matrix to score each threat by likelihood and consequence, producing a prioritised risk register","Apply HAZOP to each of the 40 threats to understand physical consequences","Implement countermeasures for all 40 threats immediately"],
+    correct:1, feedback:"✓ Correct. STRIDE produces a threat list, not a risk register. The IEC 62443 risk matrix applies likelihood and consequence scores to each finding, producing the risk register (CSMS-RA-008) with prioritised, actionable risk statements and SL-T targets." },
+  { id:"kc6", q:"During an OT risk assessment, you discover that applying mandatory session timeout (10 minutes) to DCS operator workstations is a recommended IT security control. What should you do?",
+    opts:["Implement it — session timeouts are always good security practice","Reject it outright — no IT controls apply to OT systems","Assess the HSE impact first: does a logged-out HMI screen prevent operators from seeing critical alarms? If yes, the control creates a new hazard and must be modified or rejected — §4.2.3.11 integration requirement","Implement it only on workstations, not on standalone HMIs"],
+    correct:2, feedback:"✓ Correct. §4.2.3.11 (SHALL) requires physical, HSE, and cyber security risk results to be integrated. A control that blinds an operator to a critical alarm is not a security improvement — it is a new hazard. In OT, every security control must be evaluated for its HSE impact before implementation." },
+  { id:"kc7", q:"The Annex B sequence requires high-level risk assessment BEFORE detailed vulnerability assessment. An IT risk professional argues this is inefficient — why not run the vulnerability scan first? What is the correct response?",
+    opts:["The Annex B sequence is just a guideline, not a requirement","Detailed vulnerability scans can crash OT systems — they should never be run","The high-level assessment provides the risk narrative that makes detailed findings actionable for management. Without it, a list of CVEs lacks business context and is ignored. Also, active scanning of live OT systems can cause device crashes and is not routine practice — the high-level assessment helps prioritise which systems justify the risk of detailed testing.","The vulnerability scan takes too long and should only be done on prioritised systems"],
+    correct:2, feedback:"✓ Correct. Annex B is explicit: presenting technical findings without a risk narrative produces results that management cannot act on. The high-level assessment provides the context. Additionally, active vulnerability scanning of live OT systems can crash PLCs and controllers — it requires explicit approval and is not routine, making the prioritisation from the high-level assessment essential." },
+  { id:"kc8", q:"A risk register was completed 18 months ago. A new vendor has been given remote access to the DCS, and a new ICS-CERT advisory has been published for the DCS firmware version in use. Under §4.2.3.10 (SHALL), what is required?",
+    opts:["Nothing — risk registers are reviewed annually as part of the audit programme","A full new risk assessment of the entire IACS","A targeted reassessment triggered by the two events: update the risk register for the new vendor access risk and the newly identified firmware vulnerability","Wait for the next scheduled audit to review the risk register"],
+    correct:2, feedback:"✓ Correct. §4.2.3.10 (SHALL) requires documented reassessment triggers — and both events here are triggers: new vendor access changes the attack surface, and the ICS-CERT advisory identifies a specific exploitable vulnerability. The CSMS-RA-009 trigger register documents exactly this obligation. A targeted reassessment is required now, not at the next annual review." },
+];
+
+function initAllQuizzes() {
+  const el = document.getElementById('allQuizzes');
+  if (el.children.length) return;
+  el.innerHTML = KCQuestions.map((q, qi) => `
+    <div class="quiz-q" id="${q.id}">
+      <div class="quiz-question">Q${qi+1}. ${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((opt, oi) => `<div class="quiz-opt" onclick="answerKC(this,'${q.id}',${oi},${q.correct})"><div class="quiz-dot"></div>${opt}</div>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="${q.id}-fb"></div>
+    </div>`).join('');
+}
+
+function answerKC(el, qid, selected, correct) {
+  const q = document.getElementById(qid);
+  if (q.dataset.answered) return;
+  q.dataset.answered = '1';
+  const opts = q.querySelectorAll('.quiz-opt');
+  opts.forEach((o, i) => {
+    if (i === selected && selected === correct) o.classList.add('correct');
+    else if (i === selected) o.classList.add('wrong');
+    if (i === correct && selected !== correct) o.classList.add('correct');
+  });
+  const fb = document.getElementById(qid + '-fb');
+  const qdata = KCQuestions.find(q => q.id === qid);
+  fb.classList.add('show', selected === correct ? 'correct' : 'wrong');
+  fb.textContent = qdata.feedback;
+  if (selected === correct) scores[qid] = 1;
+  const total = Object.keys(scores).filter(k=>k.startsWith('kc')).length;
+  document.getElementById('scoreDisplay').textContent = 'Score: ' + Object.values(scores).reduce((a,b)=>a+b,0) + ' / 8';
+}
+
+// Stage 1 quizzes (already in DOM)
+document.querySelectorAll('.quiz-opt').forEach(o => {
+  if (!o.onclick && o.closest('#stage1')) {
+    // bound via inline onclick
+  }
+});
+
+// ── INIT ─────────────────────────────────────────────
+updateProgress(1);
+</script>
+</body></html>
